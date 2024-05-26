@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3B186EA6-6470-4A2D-B535-FAAA72A9E386}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D684EF27-EABB-4D6E-9198-7BBA267A4DBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27BD4793-EE98-4F79-AD39-6699613EA630}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krevetki.ToDoBot.Application", "src\Krevetki.ToDoBot.Application\Krevetki.ToDoBot.Application.csproj", "{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krevetki.ToDoBot.Domain", "src\Krevetki.ToDoBot.Domain\Krevetki.ToDoBot.Domain.csproj", "{46F4EFB9-EC51-4E56-A463-B533AB80A474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krevetki.ToDoBot.Infrastructure", "src\Krevetki.ToDoBot.Infrastructure\Krevetki.ToDoBot.Infrastructure.csproj", "{3F139F01-5871-4FB4-BA34-1AB960C72A71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krevetki.ToDoBot.Bot", "src\Krevetki.ToDoBot.Bot\Krevetki.ToDoBot.Bot.csproj", "{C16D03B7-6867-44FF-8120-CFE562A9F354}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E} = {3B186EA6-6470-4A2D-B535-FAAA72A9E386}
+		{46F4EFB9-EC51-4E56-A463-B533AB80A474} = {3B186EA6-6470-4A2D-B535-FAAA72A9E386}
+		{3F139F01-5871-4FB4-BA34-1AB960C72A71} = {3B186EA6-6470-4A2D-B535-FAAA72A9E386}
+		{C16D03B7-6867-44FF-8120-CFE562A9F354} = {3B186EA6-6470-4A2D-B535-FAAA72A9E386}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F4EFB9-EC51-4E56-A463-B533AB80A474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F4EFB9-EC51-4E56-A463-B533AB80A474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F4EFB9-EC51-4E56-A463-B533AB80A474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F4EFB9-EC51-4E56-A463-B533AB80A474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F139F01-5871-4FB4-BA34-1AB960C72A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F139F01-5871-4FB4-BA34-1AB960C72A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F139F01-5871-4FB4-BA34-1AB960C72A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F139F01-5871-4FB4-BA34-1AB960C72A71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C16D03B7-6867-44FF-8120-CFE562A9F354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C16D03B7-6867-44FF-8120-CFE562A9F354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C16D03B7-6867-44FF-8120-CFE562A9F354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C16D03B7-6867-44FF-8120-CFE562A9F354}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
