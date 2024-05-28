@@ -6,7 +6,7 @@ public abstract record CommandPipeBase : ICommandPipe
 
     public async Task HandleAsync(PipeContext context, CancellationToken cancellationToken)
     {
-        if (context.Message == ApplicableMessage)
+        if (context.Message.StartsWith(ApplicableMessage))
         {
             await HandleInternal(context, cancellationToken);
         }

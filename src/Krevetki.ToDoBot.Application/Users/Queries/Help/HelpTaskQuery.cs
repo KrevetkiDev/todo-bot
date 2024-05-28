@@ -1,10 +1,10 @@
-using MediatR;
+﻿using MediatR;
 
 using ToDoBot.Application.Models.Models;
 
-namespace ToDoBot.Application.Users.Commands.Start;
+namespace ToDoBot.Application.Users.Queries.NewTask;
 
-public class StartCommand : IRequest<Message>
+public class HelpTaskQuery : IRequest<Message>
 {
     public long? TelegramId { get; set; }
 
