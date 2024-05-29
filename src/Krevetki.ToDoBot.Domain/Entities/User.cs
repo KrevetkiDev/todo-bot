@@ -6,7 +6,7 @@ public class User : EntityBase
 {
     public long TelegramId { get; set; }
 
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
     public List<ToDoItem> Tasks { get; set; } = [];
 
