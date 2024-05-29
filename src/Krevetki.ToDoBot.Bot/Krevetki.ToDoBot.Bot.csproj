@@ -9,12 +9,20 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+        <PackageReference Include="Npgsql" Version="8.0.3" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="Telegram.Bot" Version="19.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Krevetki.ToDoBot.Application\Krevetki.ToDoBot.Application.csproj" />
+      <ProjectReference Include="..\Krevetki.ToDoBot.Infrastructure\Krevetki.ToDoBot.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
