@@ -61,14 +61,13 @@ namespace ToDoBot.Infrastructure.Persistence.Migrations
                     b.Property<TimeOnly?>("EveningNotificationTime")
                         .HasColumnType("time without time zone");
 
-                    b.Property<long?>("TelegramId")
+                    b.Property<long>("TelegramId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("TimeZone")
                         .HasColumnType("integer");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

@@ -12,8 +12,8 @@ using ToDoBot.Infrastructure.Persistence;
 namespace ToDoBot.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240529124257_rename text to title")]
-    partial class renametexttotitle
+    [Migration("20240529133432_UsernameInUserIsNullable")]
+    partial class UsernameInUserIsNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,14 +64,13 @@ namespace ToDoBot.Infrastructure.Persistence.Migrations
                     b.Property<TimeOnly?>("EveningNotificationTime")
                         .HasColumnType("time without time zone");
 
-                    b.Property<long?>("TelegramId")
+                    b.Property<long>("TelegramId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("TimeZone")
                         .HasColumnType("integer");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
