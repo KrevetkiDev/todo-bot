@@ -7,9 +7,10 @@ public class Messages
 
     public const string HelpMessage = "Для того чтобы записать новое дело отправь соощение в формате: \n!Помыть посуду, 27.10.2024, 17:30";
 
-    public const string AddTodoErrorMessage = "Неправильно введено время или дата. Попробуй ещё раз";
+    public const string AddTodoErrorMessage = "Неправильный формат. Попробуй ещё раз";
 
-    public const string AddTodoSuccessMessage = "Дело: помыть посуду. Запланировано на 01.01.2024 в 9:00";
+    public static string AddTodoSuccessMessage(string task, DateOnly date, TimeOnly time) =>
+        $"Дело: {task} . Запланировано на {date} в {time}";
 
     public const string StartNewTaskMessage = "!";
 }

@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krevetki.ToDoBot.Application", "src\Krevetki.ToDoBot.Application\Krevetki.ToDoBot.Application.csproj", "{F3D95ED2-E5D3-42B2-92E3-2EDF58FB826E}"
