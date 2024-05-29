@@ -4,7 +4,7 @@ namespace ToDoBot.Domain;
 
 public class User : EntityBase
 {
-    public long? TelegramId { get; set; }
+    public long TelegramId { get; set; }
 
     public string Username { get; set; }
 

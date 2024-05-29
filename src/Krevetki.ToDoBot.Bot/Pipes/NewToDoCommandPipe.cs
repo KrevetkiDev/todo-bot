@@ -17,8 +17,7 @@ public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
     protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
     {
         ToDoItemParser toDoItemParser = new ToDoItemParser();
-        var result = toDoItemParser.TryParse(context.Message, out var toDoItemDto);
-        if (!result)
+        if (!toDoItemParser.TryParse(context.Message, out var toDoItemDto))
         {
             context.ResponseMessages.Add(new Message { Text = Messages.AddTodoErrorMessage });
             return;

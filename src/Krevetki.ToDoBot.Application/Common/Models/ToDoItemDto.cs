@@ -6,5 +6,5 @@ public class ToDoItemDto
 
     public TimeOnly TimeToStart { get; set; }
 
-    public string Text { get; set; } = default!;
+    public string Title { get; set; } = default!;
 }

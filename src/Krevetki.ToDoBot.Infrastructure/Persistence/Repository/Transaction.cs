@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Storage;
+
 using ToDoBot.Application;
 using ToDoBot.Domain.Entities;
 
@@ -26,29 +27,14 @@ public class Transaction<TEntity> : ITransaction<TEntity>
     {
         Context.SaveChanges();
         _transaction?.Commit();
-
-        _transaction?.Dispose();
-        _transaction = null;
-
-        _dbContext?.Dispose();
-        _dbContext = null;
     }
 
     public async Task CommitAsync(CancellationToken cancellationToken)
     {
-        await Context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await Context.SaveChangesAsync(cancellationToken);
         if (_transaction != null)
         {
-            await _transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
-
-            await _transaction.DisposeAsync().ConfigureAwait(false);
-            _transaction = null;
-        }
-
-        if (_dbContext != null)
-        {
-            await _dbContext.DisposeAsync().ConfigureAwait(false);
-            _dbContext = null;
+            await _transaction.CommitAsync(cancellationToken);
         }
     }
 

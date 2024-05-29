@@ -13,4 +13,6 @@ public class Messages
         $"Дело: {task} . Запланировано на {date} в {time}";
 
     public const string StartNewTaskMessage = "!";
+
+    public const string UserNotFoundMessage = "Пользователь не найден. Попробуй нажать команду старт";
 }

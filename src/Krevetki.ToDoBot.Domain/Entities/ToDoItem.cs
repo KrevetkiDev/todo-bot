@@ -8,7 +8,7 @@ public class ToDoItem : EntityBase
 
     public TimeOnly TimeToStart { get; set; }
 
-    public string Text { get; set; } = default!;
+    public string Title { get; set; } = default!;
 
     public ToDoItemStatus Status { get; set; }
 }

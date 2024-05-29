@@ -6,25 +6,16 @@ public class ToDoItemParser
 {
     public bool TryParse(string inputMessage, out ToDoItemDto dto)
     {
-        var toDoItemDto = new ToDoItemDto();
+        var stringItems = inputMessage.Split('!', ',');
 
-        var stringItems = inputMessage.Split('!', ',').ToList();
-
-        if (stringItems.Count >= 3)
+        if (stringItems.Length >= 3 && DateOnly.TryParse(stringItems[2], out var date) && TimeOnly.TryParse(stringItems[3], out var time))
         {
-            toDoItemDto.Text = stringItems[1];
+            dto = new ToDoItemDto { Title = stringItems[1], DateToStart = date, TimeToStart = time };
 
-            if (DateTime.TryParse(stringItems[2] + " " + stringItems[3], out DateTime dateTime))
-            {
-                toDoItemDto.DateToStart = DateOnly.FromDateTime(dateTime);
-                toDoItemDto.TimeToStart = TimeOnly.FromDateTime(dateTime);
-
-                dto = toDoItemDto;
-                return true;
-            }
+            return true;
         }
 
-        dto = null;
+        dto = default!;
         return false;
     }
 }
