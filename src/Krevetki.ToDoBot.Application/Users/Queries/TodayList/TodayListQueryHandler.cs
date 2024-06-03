@@ -39,11 +39,8 @@ public class TodayListQueryHandler : IRequestHandler<TodayListQuery, List<Messag
                               {
                                   new List<Button>
                                   {
-                                      new Button { Title = Models.Commands.DoneTaskCommand, CallbackData = "Done" + " " + item.Id },
-                                      new Button
-                                      {
-                                          Title = Models.Commands.NotToBeDoneTaskCommand, CallbackData = "NotToBeDone" + " " + item.Id
-                                      }
+                                      new Button { Title = Models.Commands.DoneTaskCommand, CallbackData = $"Done {item.Id}" },
+                                      new Button { Title = Models.Commands.NotToBeDoneTaskCommand, CallbackData = $"NotToBeDone {item.Id}" }
                                   }
                               }
                 };
