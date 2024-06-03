@@ -4,7 +4,7 @@ namespace Krevetki.ToDoBot.Bot.Pipes;
 
 public class CallbackQueryPipeContext
 {
-    public string? ButtonName { get; set; }
+    public string ButtonName { get; set; }
 
     public Guid ToDoItemId { get; set; }
 
