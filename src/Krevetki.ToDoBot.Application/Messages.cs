@@ -1,3 +1,5 @@
+using ToDoBot.Domain.Entities;
+
 namespace ToDoBot.Application;
 
 public class Messages
@@ -12,7 +14,19 @@ public class Messages
     public static string AddTodoSuccessMessage(string task, DateOnly date, TimeOnly time) =>
         $"Дело: {task} . Запланировано на {date} в {time}";
 
+    public static string ToDoTaskToString(ToDoItem todoTask)
+    {
+        var time = todoTask.TimeToStart;
+        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateToStart}";
+
+        return task;
+    }
+
     public const string StartNewTaskMessage = "!";
 
     public const string UserNotFoundMessage = "Пользователь не найден. Попробуй нажать команду старт";
+
+    public const string NoTasksTodayMessage = "Сегодня нет дел";
+
+    public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks} ";
 }

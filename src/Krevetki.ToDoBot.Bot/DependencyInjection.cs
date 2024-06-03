@@ -15,6 +15,9 @@ public static class DependencyInjection
                        .AddSingleton<ICommandPipe, StartTaskCommandPipe>()
                        .AddSingleton<ICommandPipe, HelpQueryPipe>()
                        .AddSingleton<ICommandPipe, NewToDoCommandPipe>()
+                       .AddSingleton<ICommandPipe, TodayListQueryPipe>()
+                       .AddSingleton<ICallbackQueryPipe, ChangeToDoItemStatusDoneCommandPipe>()
+                       .AddSingleton<ICallbackQueryPipe, ChangeToDoItemStatusNotToBeDoneCommandPipe>()
                        .AddHostedService<TelegramService>(p => (p.GetRequiredService<ITelegramService>() as TelegramService)!);
     }
 }

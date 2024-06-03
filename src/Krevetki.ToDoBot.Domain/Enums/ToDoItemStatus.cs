@@ -4,5 +4,7 @@ public enum ToDoItemStatus
 {
     New,
 
-    Completed
+    NotToBeDone,
+
+    Done
 }

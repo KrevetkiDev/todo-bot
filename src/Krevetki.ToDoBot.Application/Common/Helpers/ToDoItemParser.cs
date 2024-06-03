@@ -4,7 +4,7 @@ namespace ToDoBot.Application.Common.Models;
 
 public class ToDoItemParser
 {
-    public bool TryParse(string inputMessage, out ToDoItemDto dto)
+    public bool TryParseToDoItem(string inputMessage, out ToDoItemDto dto)
     {
         var stringItems = inputMessage.Split('!', ',');
 
