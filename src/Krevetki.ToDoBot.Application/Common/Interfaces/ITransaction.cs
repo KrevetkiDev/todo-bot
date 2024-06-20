@@ -1,6 +1,6 @@
-using ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Domain.Entities.Base;
 
-namespace ToDoBot.Application;
+namespace Krevetki.ToDoBot.Application.Common.Interfaces;
 
 public interface ITransaction<TEntity> : IDisposable, IAsyncDisposable
     where TEntity : EntityBase

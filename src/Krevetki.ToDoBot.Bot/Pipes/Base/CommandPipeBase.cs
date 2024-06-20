@@ -1,6 +1,8 @@
-namespace TodoBot.Bot.Pipes.Base;
+using Krevetki.ToDoBot.Bot.Pipes.Command;
 
-public abstract record CommandPipeBase : ICommandPipe
+namespace Krevetki.ToDoBot.Bot.Pipes.Base;
+
+public abstract record CommandPipeBase : IPipe<PipeContext>
 {
     protected abstract string ApplicableMessage { get; }
 

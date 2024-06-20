@@ -1,14 +1,15 @@
-using Krevetki.ToDoBot.Bot.Pipes;
+using Krevetki.ToDoBot.Application.Common.Models;
+using Krevetki.ToDoBot.Bot.Pipes.Callback;
 
-namespace TodoBot.Bot.Pipes.Base;
+namespace Krevetki.ToDoBot.Bot.Pipes.Base;
 
-public abstract record CallbackQueryPipeBase : ICallbackQueryPipe
+public abstract record CallbackQueryPipeBase : IPipe<CallbackQueryPipeContext>
 {
-    protected abstract string ApplicableMessage { get; }
+    protected abstract CallbackDataType ApplicableMessage { get; }
 
     public async Task HandleAsync(CallbackQueryPipeContext context, CancellationToken cancellationToken)
     {
-        if (context.ButtonName != null && context.ButtonName.StartsWith(ApplicableMessage))
+        if (context.DataType == ApplicableMessage)
         {
             await HandleInternal(context, cancellationToken);
         }

@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using ToDoBot.Application;
-using ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Domain.Entities.Base;
 
-namespace ToDoBot.Infrastructure.Persistence.Repository;
+using Microsoft.EntityFrameworkCore;
+
+namespace Krevetki.ToDoBot.Infrastructure.Persistence.Repository;
 
 public record Repository(IDbContextFactory<DatabaseContext> DbContextFactory) : IRepository
 {

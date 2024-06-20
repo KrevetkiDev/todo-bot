@@ -1,12 +1,10 @@
+using Krevetki.ToDoBot.Application.Common;
+using Krevetki.ToDoBot.Application.Users.Queries.Help;
+using Krevetki.ToDoBot.Bot.Pipes.Base;
+
 using MediatR;
 
-using ToDoBot.Application.Models;
-using ToDoBot.Application.Users.Queries.NewTask;
-
-using TodoBot.Bot.Pipes;
-using TodoBot.Bot.Pipes.Base;
-
-namespace Krevetki.ToDoBot.Bot.Pipes;
+namespace Krevetki.ToDoBot.Bot.Pipes.Command;
 
 public record HelpQueryPipe(IMediator Mediator) : CommandPipeBase
 {

@@ -1,7 +1,8 @@
 using System.Reflection;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ToDoBot.Application;
+namespace Krevetki.ToDoBot.Application;
 
 public static class DependencyInjection
 {

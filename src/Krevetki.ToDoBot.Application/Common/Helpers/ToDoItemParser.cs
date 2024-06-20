@@ -1,6 +1,6 @@
-using ToDoBot.Application.Models.Models;
+using Krevetki.ToDoBot.Application.Common.Models;
 
-namespace ToDoBot.Application.Common.Models;
+namespace Krevetki.ToDoBot.Application.Common.Helpers;
 
 public class ToDoItemParser
 {

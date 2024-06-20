@@ -1,6 +1,6 @@
-using ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Domain.Entities;
 
-namespace ToDoBot.Application;
+namespace Krevetki.ToDoBot.Application;
 
 public class Messages
 {
@@ -12,12 +12,11 @@ public class Messages
     public const string AddTodoErrorMessage = "Неправильный формат. Попробуй ещё раз";
 
     public static string AddTodoSuccessMessage(string task, DateOnly date, TimeOnly time) =>
-        $"Дело: {task} . Запланировано на {date} в {time}";
+        $"Дело: {task} . Запланировано на {date} в {time}. Напомнить?";
 
     public static string ToDoTaskToString(ToDoItem todoTask)
     {
-        var time = todoTask.TimeToStart;
-        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateToStart}";
+        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateToStart} {todoTask.TimeToStart}";
 
         return task;
     }
@@ -27,6 +26,9 @@ public class Messages
     public const string UserNotFoundMessage = "Пользователь не найден. Попробуй нажать команду старт";
 
     public const string NoTasksTodayMessage = "Сегодня нет дел";
+
+    public static string NotificationMessage(ToDoItem toDoItem) =>
+        $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.TimeToStart} {toDoItem.DateToStart}";
 
     public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks} ";
 }

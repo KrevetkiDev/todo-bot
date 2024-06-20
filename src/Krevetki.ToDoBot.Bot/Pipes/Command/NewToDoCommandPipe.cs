@@ -1,14 +1,12 @@
+using Krevetki.ToDoBot.Application;
+using Krevetki.ToDoBot.Application.Common.Helpers;
+using Krevetki.ToDoBot.Application.Common.Models;
+using Krevetki.ToDoBot.Application.Users.Commands.NewToDo;
+using Krevetki.ToDoBot.Bot.Pipes.Base;
+
 using MediatR;
 
-using ToDoBot.Application;
-using ToDoBot.Application.Common.Models;
-using ToDoBot.Application.Models.Models;
-using ToDoBot.Application.Users.Commands.NewToDo;
-
-using TodoBot.Bot.Pipes;
-using TodoBot.Bot.Pipes.Base;
-
-namespace Krevetki.ToDoBot.Bot.Pipes;
+namespace Krevetki.ToDoBot.Bot.Pipes.Command;
 
 public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
 {
@@ -28,6 +26,9 @@ public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
                 new NewToDoCommand() { TelegramId = context.TelegramId, Username = context.Username, ToDoItemDto = toDoItemDto },
                 cancellationToken);
 
-        context.ResponseMessages.Add(response);
+        foreach (var message in response)
+        {
+            context.ResponseMessages.Add(message);
+        }
     }
 }

@@ -1,8 +1,8 @@
+using Krevetki.ToDoBot.Application.Common.Models;
+
 using MediatR;
 
-using ToDoBot.Application.Models.Models;
-
-namespace ToDoBot.Application.Users.Queries;
+namespace Krevetki.ToDoBot.Application.Users.Queries.TodayList;
 
 public class TodayListQuery : IRequest<List<Message>>
 {

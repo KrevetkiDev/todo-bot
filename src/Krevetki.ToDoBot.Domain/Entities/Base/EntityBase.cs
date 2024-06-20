@@ -1,4 +1,4 @@
-namespace ToDoBot.Domain.Entities;
+namespace Krevetki.ToDoBot.Domain.Entities.Base;
 
 public class EntityBase
 {

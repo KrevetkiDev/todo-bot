@@ -1,9 +1,9 @@
+using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Domain.Entities.Base;
+
 using Microsoft.EntityFrameworkCore.Storage;
 
-using ToDoBot.Application;
-using ToDoBot.Domain.Entities;
-
-namespace ToDoBot.Infrastructure.Persistence.Repository;
+namespace Krevetki.ToDoBot.Infrastructure.Persistence.Repository;
 
 public class Transaction<TEntity> : ITransaction<TEntity>
     where TEntity : EntityBase

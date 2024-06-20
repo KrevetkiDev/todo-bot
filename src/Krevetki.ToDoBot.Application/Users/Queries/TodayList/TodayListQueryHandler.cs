@@ -1,13 +1,13 @@
+using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Application.Common.Models;
+using Krevetki.ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Domain.Enums;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using ToDoBot.Application.Common.Models;
-using ToDoBot.Application.Models.Models;
-using ToDoBot.Domain.Entities;
-using ToDoBot.Domain.Enums;
-
-namespace ToDoBot.Application.Users.Queries;
+namespace Krevetki.ToDoBot.Application.Users.Queries.TodayList;
 
 public class TodayListQueryHandler : IRequestHandler<TodayListQuery, List<Message>>
 {
@@ -35,14 +35,13 @@ public class TodayListQueryHandler : IRequestHandler<TodayListQuery, List<Messag
             var keyboard =
                 new InlineKeyboard
                 {
-                    Buttons = new List<List<Button>>
-                              {
-                                  new List<Button>
-                                  {
-                                      new Button { Title = Models.Commands.DoneTaskCommand, CallbackData = $"Done {item.Id}" },
-                                      new Button { Title = Models.Commands.NotToBeDoneTaskCommand, CallbackData = $"NotToBeDone {item.Id}" }
-                                  }
-                              }
+                    Buttons =
+                    [
+                        [
+                            new Button { Title = Common.Commands.DoneTaskCommand, CallbackData = $"Done {item.Id}" },
+                            new Button { Title = Common.Commands.NotToBeDoneTaskCommand, CallbackData = $"NotToBeDone {item.Id}" }
+                        ]
+                    ]
                 };
 
             messagesList.Add(new Message { Text = Messages.ToDoTaskToString(item), Keyboard = keyboard });

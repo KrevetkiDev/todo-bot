@@ -1,4 +1,4 @@
-namespace ToDoBot.Application.Models.Models;
+namespace Krevetki.ToDoBot.Application.Common.Models;
 
 public class ToDoItemDto
 {

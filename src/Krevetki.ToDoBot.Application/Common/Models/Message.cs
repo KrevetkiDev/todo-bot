@@ -1,10 +1,8 @@
-using ToDoBot.Application.Common.Models;
-
-namespace ToDoBot.Application.Models.Models;
+namespace Krevetki.ToDoBot.Application.Common.Models;
 
 public class Message
 {
-    public string Text { get; set; }
+    public string Text { get; set; } = null!;
 
-    public InlineKeyboard Keyboard { get; set; }
+    public InlineKeyboard? Keyboard { get; set; }
 }

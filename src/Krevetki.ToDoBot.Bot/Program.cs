@@ -1,10 +1,9 @@
+using Krevetki.ToDoBot.Application;
 using Krevetki.ToDoBot.Bot;
+using Krevetki.ToDoBot.Infrastructure;
+using Krevetki.ToDoBot.Infrastructure.Persistence;
 
 using Microsoft.EntityFrameworkCore;
-
-using ToDoBot.Application;
-using ToDoBot.Infrastructure;
-using ToDoBot.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration

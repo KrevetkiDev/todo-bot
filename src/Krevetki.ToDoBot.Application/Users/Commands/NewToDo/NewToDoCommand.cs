@@ -1,10 +1,10 @@
+using Krevetki.ToDoBot.Application.Common.Models;
+
 using MediatR;
 
-using ToDoBot.Application.Models.Models;
+namespace Krevetki.ToDoBot.Application.Users.Commands.NewToDo;
 
-namespace ToDoBot.Application.Users.Commands.NewToDo;
-
-public class NewToDoCommand : IRequest<Message>
+public class NewToDoCommand : IRequest<List<Message>>
 {
     public long TelegramId { get; set; }
 
