@@ -9,4 +9,6 @@ public class StartCommand : IRequest<Message>
     public long TelegramId { get; set; }
 
     public string? Username { get; set; }
+
+    public long ChatId { get; set; }
 }

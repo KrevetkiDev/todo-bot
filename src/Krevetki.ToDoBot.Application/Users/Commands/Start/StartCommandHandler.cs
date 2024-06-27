@@ -17,7 +17,7 @@ public record StartCommandHandler(IRepository Repository) : IRequestHandler<Star
         var user = transaction.Set.AsNoTracking().FirstOrDefault(x => x.TelegramId == request.TelegramId);
         if (user == null)
         {
-            user = new User { TelegramId = request.TelegramId, Username = request.Username, };
+            user = new User { TelegramId = request.TelegramId, Username = request.Username, ChatId = request.ChatId };
             transaction.Add(user);
             await transaction.CommitAsync(cancellationToken);
         }

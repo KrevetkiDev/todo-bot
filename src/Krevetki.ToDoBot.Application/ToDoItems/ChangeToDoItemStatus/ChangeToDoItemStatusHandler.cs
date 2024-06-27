@@ -7,9 +7,10 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Krevetki.ToDoBot.Application.Users.Commands.ChangeToDoItemStatus;
+namespace Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
 
-public record ChangeToDoItemStatusHandler(IRepository Repository) : IRequestHandler<ChangeToDoItemStatusCommand, Message>
+public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageService MessageService)
+    : IRequestHandler<ChangeToDoItemStatusCommand, Message>
 {
     public async Task<Message> Handle(ChangeToDoItemStatusCommand request, CancellationToken cancellationToken)
     {
@@ -17,16 +18,21 @@ public record ChangeToDoItemStatusHandler(IRepository Repository) : IRequestHand
 
         var toDoItem = transaction.Set.FirstOrDefault(x => x.Id == request.ToDoItemId);
 
+        toDoItem.Status = request.ToDoItemStatus;
+
         var todayTasksList = await transaction.Set
                                               .AsNoTracking()
                                               .Where(
-                                                  x => x.DateToStart == DateOnly.FromDateTime(DateTime.Now)
+                                                  x => x.DateTimeToStart == DateTime.Now.ToUniversalTime()
                                                        && x.Status == ToDoItemStatus.New)
                                               .ToListAsync(cancellationToken);
 
-        toDoItem.Status = request.ToDoItemStatus;
-
         await transaction.CommitAsync(cancellationToken);
+
+        if (request.ToDoItemStatus != ToDoItemStatus.New)
+        {
+            await MessageService.DeleteMessageAsync(request.MessageId, request.ChatId, cancellationToken);
+        }
 
         if (todayTasksList.Count == 0)
         {

@@ -1,18 +1,15 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.Users.Commands.ChangeNotificationStatus;
+using Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
 
 using MediatR;
 
-using Newtonsoft.Json;
+namespace Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 
-using CallbackData = Krevetki.ToDoBot.Domain.Entities.CallbackData;
-
-namespace Krevetki.ToDoBot.Application.Users.Commands.NewToDo;
-
-public record NewToDoCommandHandler(IRepository Repository) : IRequestHandler<NewToDoCommand, List<Message>>
+public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver CallbackDataSaver)
+    : IRequestHandler<NewToDoCommand, List<Message>>
 {
     public async Task<List<Message>> Handle(NewToDoCommand request, CancellationToken cancellationToken)
     {
@@ -26,9 +23,7 @@ public record NewToDoCommandHandler(IRepository Repository) : IRequestHandler<Ne
         {
             var todoItem = new ToDoItem
                            {
-                               Title = request.ToDoItemDto.Title,
-                               DateToStart = request.ToDoItemDto.DateToStart,
-                               TimeToStart = request.ToDoItemDto.TimeToStart
+                               Title = request.ToDoItemDto.Title, DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime()
                            };
 
             user.Tasks.Add(todoItem);
@@ -72,32 +67,37 @@ public record NewToDoCommandHandler(IRepository Repository) : IRequestHandler<Ne
                             new Button
                             {
                                 Title = Common.Commands.DisableNotification,
-                                CallbackData = await SaveCallbackData(disableNotificationCallbackData, cancellationToken),
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    disableNotificationCallbackData,
+                                                    cancellationToken)).ToString(),
                             },
                             new Button
                             {
                                 Title = Common.Commands.NotificationInHour,
-                                CallbackData = await SaveCallbackData(inHourNotificationCallbackData, cancellationToken)
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inHourNotificationCallbackData,
+                                                    cancellationToken)).ToString()
                             },
                             new Button
                             {
                                 Title = Common.Commands.NotificationInThreeHours,
-                                CallbackData = await SaveCallbackData(inThreeHoursNotificationCallbackData, cancellationToken)
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inThreeHoursNotificationCallbackData,
+                                                    cancellationToken)).ToString()
                             },
                             new Button
                             {
                                 Title = Common.Commands.NotificationInDay,
-                                CallbackData = await SaveCallbackData(inTwentyFourNotificationCallbackData, cancellationToken)
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inTwentyFourNotificationCallbackData,
+                                                    cancellationToken)).ToString()
                             },
                         ]
                     ]
                 };
 
             messagesList.Add(
-                new Message
-                {
-                    Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateToStart, todoItem.TimeToStart), Keyboard = keyboard
-                });
+                new Message { Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart), Keyboard = keyboard });
         }
 
         if (user == null)
@@ -106,14 +106,5 @@ public record NewToDoCommandHandler(IRepository Repository) : IRequestHandler<Ne
         }
 
         return messagesList;
-    }
-
-    private async Task<string> SaveCallbackData(object data, CancellationToken cancellationToken)
-    {
-        await using var transactionCallbackData = await Repository.BeginTransactionAsync<CallbackData>(cancellationToken);
-        var callbackData = new CallbackData { JsonData = JsonConvert.SerializeObject(data) };
-        transactionCallbackData.Add(callbackData);
-        await transactionCallbackData.CommitAsync(cancellationToken);
-        return callbackData.Id.ToString();
     }
 }

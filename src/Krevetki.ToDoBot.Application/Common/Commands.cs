@@ -25,4 +25,8 @@ public class Commands
     public const string NotificationNotActiv = "\ud83d\udd15";
 
     public const string NotificationDisableCallbackdata = "Disable";
+
+    public const string NotificationCallbackDataStatusDone = "Done";
+
+    public const string NotificationCallbackDataStatusUndone = "Undone";
 }

@@ -1,7 +1,7 @@
 using Krevetki.ToDoBot.Application;
 using Krevetki.ToDoBot.Application.Common.Helpers;
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.Users.Commands.NewToDo;
+using Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 using Krevetki.ToDoBot.Bot.Pipes.Base;
 
 using MediatR;

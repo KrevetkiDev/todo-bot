@@ -24,4 +24,6 @@ public class PipeContext
     /// Коллекция для ответных сообщений
     /// </summary>
     public ICollection<Message> ResponseMessages { get; set; } = new List<Message>();
+
+    public long ChatId { get; set; }
 }

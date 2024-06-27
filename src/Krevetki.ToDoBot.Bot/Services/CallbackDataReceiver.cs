@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 using Newtonsoft.Json;
 
-using Telegram.Bot;
 using Telegram.Bot.Types;
 
 using CallbackData = Krevetki.ToDoBot.Domain.Entities.CallbackData;
@@ -17,10 +16,11 @@ namespace Krevetki.ToDoBot.Bot.Services;
 public record CallbackDataReceiver(
     IRepository Repository,
     IEnumerable<IPipe<CallbackQueryPipeContext>> Pipes,
+    IMessageService MessageService,
     ILogger<ICallbackReceiver> Logger)
     : ICallbackReceiver
 {
-    public async Task ReceiveAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
+    public async Task ReceiveAsync(Update update, CancellationToken cancellationToken)
     {
         Logger.LogInformation("Received message {CallbackQuery}", update.CallbackQuery);
         if (Guid.TryParse(update.CallbackQuery?.Data, out var callbackDataId))
@@ -34,11 +34,23 @@ public record CallbackDataReceiver(
             var callbackData =
                 JsonConvert.DeserializeObject<Krevetki.ToDoBot.Application.Common.Models.CallbackData>(callbackDataDb.JsonData);
 
-            var pipeContext = new CallbackQueryPipeContext { Data = callbackDataDb.JsonData, DataType = callbackData!.CallbackType };
+            var pipeContext = new CallbackQueryPipeContext
+                              {
+                                  Data = callbackDataDb.JsonData,
+                                  DataType = callbackData!.CallbackType,
+                                  MessageId = update.CallbackQuery.Message.MessageId,
+                                  ChatId = update.CallbackQuery.Message.Chat.Id
+                              };
 
             foreach (var pipe in Pipes)
             {
                 await pipe.HandleAsync(pipeContext, cancellationToken);
+            }
+
+            foreach (var message in pipeContext.ResponseMessages)
+            {
+                if (update.CallbackQuery.Message != null)
+                    await MessageService.SendMessageAsync(message, update.CallbackQuery.Message.Chat.Id, cancellationToken);
             }
         }
     }

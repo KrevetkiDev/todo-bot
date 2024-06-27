@@ -9,4 +9,8 @@ public class CallbackQueryPipeContext
     public string Data { get; set; }
 
     public ICollection<Message> ResponseMessages { get; set; } = new List<Message>();
+
+    public long ChatId;
+
+    public int MessageId { get; set; }
 }

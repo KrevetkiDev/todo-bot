@@ -11,12 +11,12 @@ public class Messages
 
     public const string AddTodoErrorMessage = "Неправильный формат. Попробуй ещё раз";
 
-    public static string AddTodoSuccessMessage(string task, DateOnly date, TimeOnly time) =>
-        $"Дело: {task} . Запланировано на {date} в {time}. Напомнить?";
+    public static string AddTodoSuccessMessage(string task, DateTime dateTimeToStart) =>
+        $"Дело: {task} . Запланировано на {dateTimeToStart.ToLocalTime()}. Напомнить?";
 
     public static string ToDoTaskToString(ToDoItem todoTask)
     {
-        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateToStart} {todoTask.TimeToStart}";
+        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}";
 
         return task;
     }
@@ -28,7 +28,13 @@ public class Messages
     public const string NoTasksTodayMessage = "Сегодня нет дел";
 
     public static string NotificationMessage(ToDoItem toDoItem) =>
-        $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.TimeToStart} {toDoItem.DateToStart}";
+        $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.DateTimeToStart.ToLocalTime()}";
 
     public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks} ";
+
+    public const string NotificationOn = "Хорошо, обязательно напомню!";
+
+    public const string NotificationDisable = "Хорошо, не буду напоминать!";
+
+    public const string NotificationAlreadyExist = "Уведомление уже поставлено!";
 }

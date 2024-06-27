@@ -1,6 +1,8 @@
 ﻿using System.Timers;
 
+using Krevetki.ToDoBot.Application;
 using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +19,9 @@ namespace Krevetki.ToDoBot.Bot.Services
 
         private readonly ILogger<NotificationService> _logger;
 
-        private readonly ITelegramService _telegramService;
+        private readonly IMessageService _telegramService;
 
-        public NotificationService(IRepository repository, ILogger<NotificationService> logger, ITelegramService telegramService)
+        public NotificationService(IRepository repository, ILogger<NotificationService> logger, IMessageService telegramService)
         {
             _repository = repository;
             _logger = logger;
@@ -33,24 +35,27 @@ namespace Krevetki.ToDoBot.Bot.Services
         {
             try
             {
-                using var transaction = await _repository.BeginTransactionAsync<Notification>(cancellationToken: new CancellationToken());
-                var now = DateTime.Now;
-                var notifications = await transaction.Set
-                                                     .AsNoTracking()
-                                                     .Include(x => x.ToDoItem)
-                                                     .Include(x => x.User)
-                                                     .Where(
-                                                         x => x.NotificationTime.Date == now.Date
-                                                              && x.NotificationTime.Hour == now.Hour
-                                                              && x.NotificationTime.Minute == now.Minute)
-                                                     .ToListAsync();
+                await using var transaction =
+                    await _repository.BeginTransactionAsync<Notification>(cancellationToken: new CancellationToken());
+                var now = e.SignalTime.ToUniversalTime();
+
+                var notifications = transaction.Set
+                                               .AsNoTracking()
+                                               .Include(x => x.ToDoItem)
+                                               .Include(x => x.User)
+                                               .Where(
+                                                   x => x.NotificationTime.Date == now.Date)
+                                               .Where(
+                                                   x => x.NotificationTime.Hour == now.Hour
+                                                        && x.NotificationTime.Minute == now.Minute)
+                                               .ToList();
 
                 foreach (var notification in notifications)
                 {
-                    // await _telegramService.SendMessageAsync(
-                    //     notification.User.ChatId,
-                    //     new Message() { Text = Messages.NotificationMessage(notification.ToDoItem) },
-                    //     new CancellationToken());
+                    await _telegramService.SendMessageAsync(
+                        new Message() { Text = Messages.NotificationMessage(notification.ToDoItem) },
+                        notification.User.ChatId,
+                        new CancellationToken());
                 }
             }
             catch (Exception ex)

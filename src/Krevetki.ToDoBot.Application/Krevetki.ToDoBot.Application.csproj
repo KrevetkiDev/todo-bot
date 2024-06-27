@@ -18,4 +18,9 @@
       <ProjectReference Include="..\Krevetki.ToDoBot.Domain\Krevetki.ToDoBot.Domain.csproj" />
     </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Notifications\"/>
+    <Folder Include="ToDoItems\"/>
+  </ItemGroup>
+
 </Project>

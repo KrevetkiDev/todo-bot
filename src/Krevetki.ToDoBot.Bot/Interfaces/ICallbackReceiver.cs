@@ -1,3 +1,3 @@
 namespace Krevetki.ToDoBot.Bot.Interfaces;
 
-public interface ICallbackReceiver : IMessageReceiver;
+public interface ICallbackReceiver : IReceiverService;

@@ -2,7 +2,7 @@ using Krevetki.ToDoBot.Application.Common.Models;
 
 using MediatR;
 
-namespace Krevetki.ToDoBot.Application.Users.Commands.NewToDo;
+namespace Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 
 public class NewToDoCommand : IRequest<List<Message>>
 {
