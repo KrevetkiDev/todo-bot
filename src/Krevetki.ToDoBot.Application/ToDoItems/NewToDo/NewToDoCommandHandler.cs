@@ -58,7 +58,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
                     CallbackType = CallbackDataType.NotificationInterval
                 };
 
-            var keyboard =
+            var keyboardIfMoreDayBeforeEvent =
                 new InlineKeyboard
                 {
                     Buttons =
@@ -96,13 +96,146 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
                     ]
                 };
 
-            messagesList.Add(
-                new Message { Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart), Keyboard = keyboard });
-        }
+            var keyboardIfMoreThreeHoursBeforeEvent =
+                new InlineKeyboard
+                {
+                    Buttons =
+                    [
+                        [
+                            new Button
+                            {
+                                Title = Common.Commands.DisableNotification,
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    disableNotificationCallbackData,
+                                                    cancellationToken)).ToString(),
+                            },
+                            new Button
+                            {
+                                Title = Common.Commands.NotificationInHour,
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inHourNotificationCallbackData,
+                                                    cancellationToken)).ToString()
+                            },
+                            new Button
+                            {
+                                Title = Common.Commands.NotificationInThreeHours,
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inThreeHoursNotificationCallbackData,
+                                                    cancellationToken)).ToString()
+                            }
+                        ]
+                    ]
+                };
 
-        if (user == null)
-        {
-            messagesList.Add(new Message { Text = Messages.UserNotFoundMessage });
+            var keyboardIfMoreOneHourBeforeEvent =
+                new InlineKeyboard
+                {
+                    Buttons =
+                    [
+                        [
+                            new Button
+                            {
+                                Title = Common.Commands.DisableNotification,
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    disableNotificationCallbackData,
+                                                    cancellationToken)).ToString(),
+                            },
+                            new Button
+                            {
+                                Title = Common.Commands.NotificationInHour,
+                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
+                                                    inHourNotificationCallbackData,
+                                                    cancellationToken)).ToString()
+                            }
+                        ]
+                    ]
+                };
+            var now = DateTime.UtcNow;
+            const int day = 24;
+            const int threeHours = 3;
+            const int oneHour = 1;
+
+            if (todoItem.DateTimeToStart.Date != now.Date && todoItem.DateTimeToStart.Date == now.Date.AddDays(1))
+            {
+                messagesList.Add(
+                    new Message
+                    {
+                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
+                        Keyboard = keyboardIfMoreDayBeforeEvent
+                    });
+            }
+
+            if (todoItem.DateTimeToStart.Date == now.Date.AddDays(1))
+            {
+                var restOfHoursInToday = day - now.Hour;
+                var restOfHoursInTomorrow = todoItem.DateTimeToStart.Hour;
+                var sum = restOfHoursInToday + restOfHoursInTomorrow;
+
+                if (sum > threeHours && sum < day)
+                {
+                    messagesList.Add(
+                        new Message
+                        {
+                            Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
+                            Keyboard = keyboardIfMoreThreeHoursBeforeEvent
+                        });
+                }
+
+                if (sum > oneHour && sum < threeHours)
+                {
+                    messagesList.Add(
+                        new Message
+                        {
+                            Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
+                            Keyboard = keyboardIfMoreOneHourBeforeEvent
+                        });
+                }
+
+                if (sum < oneHour)
+                {
+                    messagesList.Add(
+                        new Message
+                        {
+                            Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart)
+                        });
+                }
+            }
+
+            var timeDifference = todoItem.DateTimeToStart - now;
+
+            if (timeDifference.TotalHours > threeHours && timeDifference.TotalHours < day)
+            {
+                messagesList.Add(
+                    new Message
+                    {
+                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
+                        Keyboard = keyboardIfMoreThreeHoursBeforeEvent
+                    });
+            }
+
+            if (timeDifference.TotalHours > oneHour && timeDifference.TotalHours < threeHours)
+            {
+                messagesList.Add(
+                    new Message
+                    {
+                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
+                        Keyboard = keyboardIfMoreOneHourBeforeEvent
+                    });
+            }
+
+            if (timeDifference.TotalHours < oneHour)
+            {
+                messagesList.Add(
+                    new Message
+                    {
+                        Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart)
+                    });
+            }
+
+            if (user == null)
+            {
+                messagesList.Add(new Message { Text = Messages.UserNotFoundMessage });
+            }
         }
 
         return messagesList;

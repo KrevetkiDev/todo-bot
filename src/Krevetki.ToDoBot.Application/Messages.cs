@@ -37,4 +37,7 @@ public class Messages
     public const string NotificationDisable = "Хорошо, не буду напоминать!";
 
     public const string NotificationAlreadyExist = "Уведомление уже поставлено!";
+
+    public static string AddTodoSuccessMessageIfLessThanHourBeforeEvent(string task, DateTime dateTimeToStart) =>
+        $"Дело: {task} . Запланировано на {dateTimeToStart.ToLocalTime()}.";
 }
