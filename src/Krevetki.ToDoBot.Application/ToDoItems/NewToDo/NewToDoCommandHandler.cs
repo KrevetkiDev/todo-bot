@@ -65,20 +65,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         if (hoursBeforeToBeDone > (int)NotificationTimeIntervals.InTwentyFourHours)
         {
-            var inTwentyFourNotificationCallbackData =
-                new CallbackData<ChangeNotificationStatusCommand>
-                {
-                    Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InTwentyFourHours, UserId = user.Id },
-                    CallbackType = CallbackDataType.NotificationInterval
-                };
-            keyboard.Buttons[0].Add(
-                new Button
-                {
-                    Title = Common.Commands.NotificationInDay,
-                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
-                                        inTwentyFourNotificationCallbackData,
-                                        cancellationToken)).ToString()
-                });
+            keyboard.Buttons[0].Add(await GetDayButton(todoItem, user, cancellationToken));
         }
 
         return keyboard;
