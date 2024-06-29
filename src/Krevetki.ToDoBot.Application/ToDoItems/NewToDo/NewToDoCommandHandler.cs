@@ -13,231 +13,146 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 {
     public async Task<List<Message>> Handle(NewToDoCommand request, CancellationToken cancellationToken)
     {
+        var messagesList = new List<Message>();
+
         await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
 
         var user = transaction.Set.FirstOrDefault(x => x.TelegramId == request.TelegramId);
 
-        var messagesList = new List<Message>();
-
-        if (user != null)
+        if (user == null)
         {
-            var todoItem = new ToDoItem
-                           {
-                               Title = request.ToDoItemDto.Title, DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime()
-                           };
+            messagesList.Add(new Message { Text = Messages.UserNotFoundMessage });
+            return messagesList;
+        }
 
-            user.Tasks.Add(todoItem);
+        var todoItem = new ToDoItem
+                       {
+                           Title = request.ToDoItemDto.Title, DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime()
+                       };
 
-            await transaction.CommitAsync(cancellationToken);
+        user.Tasks.Add(todoItem);
 
-            var disableNotificationCallbackData =
-                new CallbackData<ChangeNotificationStatusCommand>
-                {
-                    Data = new() { ToDoItemId = todoItem.Id, TimeInterval = null, UserId = user.Id },
-                    CallbackType = CallbackDataType.NotificationInterval
-                };
+        await transaction.CommitAsync(cancellationToken);
 
-            var inHourNotificationCallbackData =
-                new CallbackData<ChangeNotificationStatusCommand>
-                {
-                    Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InHour, UserId = user.Id },
-                    CallbackType = CallbackDataType.NotificationInterval
-                };
+        var keyboard = await GetKeyboard(todoItem, user, cancellationToken);
 
-            var inThreeHoursNotificationCallbackData =
-                new CallbackData<ChangeNotificationStatusCommand>
-                {
-                    Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InThreeHours, UserId = user.Id },
-                    CallbackType = CallbackDataType.NotificationInterval
-                };
+        messagesList.Add(
+            new Message
+            {
+                Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart),
+                Keyboard = keyboard
+            });
 
+        return messagesList;
+    }
+
+    private async Task<InlineKeyboard> GetKeyboard(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    {
+        var keyboard = new InlineKeyboard();
+
+        var hoursBeforeToBeDone = (todoItem.DateTimeToStart.ToUniversalTime() - DateTime.UtcNow).TotalHours;
+
+        if (hoursBeforeToBeDone > (int)NotificationTimeIntervals.InHour)
+        {
+            keyboard.Buttons[0].Add(await GetDisableButton(todoItem, user, cancellationToken));
+            keyboard.Buttons[0].Add(await GetHourButton(todoItem, user, cancellationToken));
+        }
+
+        if (hoursBeforeToBeDone > (int)NotificationTimeIntervals.InThreeHours)
+        {
+            keyboard.Buttons[0].Add(await GetThreeHoursButton(todoItem, user, cancellationToken));
+        }
+
+        if (hoursBeforeToBeDone > (int)NotificationTimeIntervals.InTwentyFourHours)
+        {
             var inTwentyFourNotificationCallbackData =
                 new CallbackData<ChangeNotificationStatusCommand>
                 {
                     Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InTwentyFourHours, UserId = user.Id },
                     CallbackType = CallbackDataType.NotificationInterval
                 };
-
-            var keyboardIfMoreDayBeforeEvent =
-                new InlineKeyboard
+            keyboard.Buttons[0].Add(
+                new Button
                 {
-                    Buttons =
-                    [
-                        [
-                            new Button
-                            {
-                                Title = Common.Commands.DisableNotification,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    disableNotificationCallbackData,
-                                                    cancellationToken)).ToString(),
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInHour,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inHourNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInThreeHours,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inThreeHoursNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInDay,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inTwentyFourNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            },
-                        ]
-                    ]
-                };
-
-            var keyboardIfMoreThreeHoursBeforeEvent =
-                new InlineKeyboard
-                {
-                    Buttons =
-                    [
-                        [
-                            new Button
-                            {
-                                Title = Common.Commands.DisableNotification,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    disableNotificationCallbackData,
-                                                    cancellationToken)).ToString(),
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInHour,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inHourNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInThreeHours,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inThreeHoursNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            }
-                        ]
-                    ]
-                };
-
-            var keyboardIfMoreOneHourBeforeEvent =
-                new InlineKeyboard
-                {
-                    Buttons =
-                    [
-                        [
-                            new Button
-                            {
-                                Title = Common.Commands.DisableNotification,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    disableNotificationCallbackData,
-                                                    cancellationToken)).ToString(),
-                            },
-                            new Button
-                            {
-                                Title = Common.Commands.NotificationInHour,
-                                CallbackData = (await CallbackDataSaver.SaveCallbackDataMethod(
-                                                    inHourNotificationCallbackData,
-                                                    cancellationToken)).ToString()
-                            }
-                        ]
-                    ]
-                };
-            var now = DateTime.UtcNow;
-            const int day = 24;
-            const int threeHours = 3;
-            const int oneHour = 1;
-
-            if (todoItem.DateTimeToStart.Date != now.Date && todoItem.DateTimeToStart.Date == now.Date.AddDays(1))
-            {
-                messagesList.Add(
-                    new Message
-                    {
-                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
-                        Keyboard = keyboardIfMoreDayBeforeEvent
-                    });
-            }
-
-            if (todoItem.DateTimeToStart.Date == now.Date.AddDays(1))
-            {
-                var restOfHoursInToday = day - now.Hour;
-                var restOfHoursInTomorrow = todoItem.DateTimeToStart.Hour;
-                var sum = restOfHoursInToday + restOfHoursInTomorrow;
-
-                if (sum > threeHours && sum < day)
-                {
-                    messagesList.Add(
-                        new Message
-                        {
-                            Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
-                            Keyboard = keyboardIfMoreThreeHoursBeforeEvent
-                        });
-                }
-
-                if (sum > oneHour && sum < threeHours)
-                {
-                    messagesList.Add(
-                        new Message
-                        {
-                            Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
-                            Keyboard = keyboardIfMoreOneHourBeforeEvent
-                        });
-                }
-
-                if (sum < oneHour)
-                {
-                    messagesList.Add(
-                        new Message
-                        {
-                            Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart)
-                        });
-                }
-            }
-
-            var timeDifference = todoItem.DateTimeToStart - now;
-
-            if (timeDifference.TotalHours > threeHours && timeDifference.TotalHours < day)
-            {
-                messagesList.Add(
-                    new Message
-                    {
-                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
-                        Keyboard = keyboardIfMoreThreeHoursBeforeEvent
-                    });
-            }
-
-            if (timeDifference.TotalHours > oneHour && timeDifference.TotalHours < threeHours)
-            {
-                messagesList.Add(
-                    new Message
-                    {
-                        Text = Messages.AddTodoSuccessMessage(todoItem.Title, todoItem.DateTimeToStart),
-                        Keyboard = keyboardIfMoreOneHourBeforeEvent
-                    });
-            }
-
-            if (timeDifference.TotalHours < oneHour)
-            {
-                messagesList.Add(
-                    new Message
-                    {
-                        Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart)
-                    });
-            }
-
-            if (user == null)
-            {
-                messagesList.Add(new Message { Text = Messages.UserNotFoundMessage });
-            }
+                    Title = Common.Commands.NotificationInDay,
+                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
+                                        inTwentyFourNotificationCallbackData,
+                                        cancellationToken)).ToString()
+                });
         }
 
-        return messagesList;
+        return keyboard;
+    }
+
+    private async Task<Button> GetDisableButton(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    {
+        var disableNotificationCallbackData =
+            new CallbackData<ChangeNotificationStatusCommand>
+            {
+                Data = new() { ToDoItemId = todoItem.Id, TimeInterval = null, UserId = user.Id },
+                CallbackType = CallbackDataType.NotificationInterval
+            };
+
+        return new Button
+               {
+                   Title = Common.Commands.DisableNotification,
+                   CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
+                                       disableNotificationCallbackData,
+                                       cancellationToken)).ToString(),
+               };
+    }
+
+    private async Task<Button> GetHourButton(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    {
+        var inHourNotificationCallbackData =
+            new CallbackData<ChangeNotificationStatusCommand>
+            {
+                Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InHour, UserId = user.Id },
+                CallbackType = CallbackDataType.NotificationInterval
+            };
+
+        return new Button
+               {
+                   Title = Common.Commands.NotificationInHour,
+                   CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
+                                       inHourNotificationCallbackData,
+                                       cancellationToken)).ToString()
+               };
+    }
+
+    private async Task<Button> GetThreeHoursButton(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    {
+        var inHourNotificationCallbackData =
+            new CallbackData<ChangeNotificationStatusCommand>
+            {
+                Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InThreeHours, UserId = user.Id },
+                CallbackType = CallbackDataType.NotificationInterval
+            };
+
+        return new Button
+               {
+                   Title = Common.Commands.NotificationInThreeHours,
+                   CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
+                                       inHourNotificationCallbackData,
+                                       cancellationToken)).ToString()
+               };
+    }
+
+    private async Task<Button> GetDayButton(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    {
+        var inHourNotificationCallbackData =
+            new CallbackData<ChangeNotificationStatusCommand>
+            {
+                Data = new() { ToDoItemId = todoItem.Id, TimeInterval = NotificationTimeIntervals.InTwentyFourHours, UserId = user.Id },
+                CallbackType = CallbackDataType.NotificationInterval
+            };
+
+        return new Button
+               {
+                   Title = Common.Commands.NotificationInDay,
+                   CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
+                                       inHourNotificationCallbackData,
+                                       cancellationToken)).ToString()
+               };
     }
 }

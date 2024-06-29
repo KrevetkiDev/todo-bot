@@ -1,7 +1,6 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
-using Krevetki.ToDoBot.Domain.Enums;
 
 using MediatR;
 
@@ -14,9 +13,7 @@ namespace Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus
             await using var transactionNotification = await Repository.BeginTransactionAsync<Notification>(cancellationToken);
             var notification = transactionNotification.Set.FirstOrDefault(x => x.ToDoItemId == request.ToDoItemId);
 
-            if ((request.TimeInterval == NotificationTimeIntervals.InHour
-                 || request.TimeInterval == NotificationTimeIntervals.InThreeHours
-                 || request.TimeInterval == NotificationTimeIntervals.InTwentyFourHours)
+            if ((request.TimeInterval != null)
                 && notification == null)
             {
                 await using var transactionToDoItem = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);

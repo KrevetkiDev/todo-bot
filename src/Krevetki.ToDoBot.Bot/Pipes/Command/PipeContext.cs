@@ -2,7 +2,6 @@ using Krevetki.ToDoBot.Application.Common.Models;
 
 namespace Krevetki.ToDoBot.Bot.Pipes.Command;
 
-//TODO: вынести повторяющиеся свойства в базовый класс и огроничить TContext в IPipe по этому классу
 public class PipeContext
 {
     /// <summary>
