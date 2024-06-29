@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using Krevetki.ToDoBot.Application.Common.Models;
 
-using ToDoBot.Application.Models.Models;
+using MediatR;
 
-namespace ToDoBot.Application.Users.Queries.NewTask;
+namespace Krevetki.ToDoBot.Application.Users.Queries.Help;
 
 public class HelpTaskQuery : IRequest<Message>
 {

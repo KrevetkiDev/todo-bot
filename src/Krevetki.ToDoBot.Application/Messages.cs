@@ -1,6 +1,7 @@
-using ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Application.Common;
+using Krevetki.ToDoBot.Domain.Entities;
 
-namespace ToDoBot.Application;
+namespace Krevetki.ToDoBot.Application;
 
 public class Messages
 {
@@ -11,13 +12,20 @@ public class Messages
 
     public const string AddTodoErrorMessage = "Неправильный формат. Попробуй ещё раз";
 
-    public static string AddTodoSuccessMessage(string task, DateOnly date, TimeOnly time) =>
-        $"Дело: {task} . Запланировано на {date} в {time}";
+    public static string AddTodoSuccessMessage(string task, DateTime dateTimeToStart) =>
+        $"Дело: {task} . Запланировано на {dateTimeToStart.ToLocalTime()}. Напомнить?";
 
-    public static string ToDoTaskToString(ToDoItem todoTask)
+    public static string ToDoTaskToString(ToDoItem todoTask, bool isNotificationExists)
     {
-        var time = todoTask.TimeToStart;
-        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateToStart}";
+        string task;
+        if (!isNotificationExists)
+        {
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationsActiv}";
+        }
+        else
+        {
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationNotActiv}";
+        }
 
         return task;
     }
@@ -28,5 +36,17 @@ public class Messages
 
     public const string NoTasksTodayMessage = "Сегодня нет дел";
 
+    public static string NotificationMessage(ToDoItem toDoItem) =>
+        $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.DateTimeToStart.ToLocalTime()}";
+
     public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks} ";
+
+    public const string NotificationOn = "Хорошо, обязательно напомню!";
+
+    public const string NotificationDisable = "Хорошо, не буду напоминать!";
+
+    public const string NotificationAlreadyExist = "Уведомление уже поставлено!";
+
+    public static string AddTodoSuccessMessageIfLessThanHourBeforeEvent(string task, DateTime dateTimeToStart) =>
+        $"Дело: {task} . Запланировано на {dateTimeToStart.ToLocalTime()}.";
 }

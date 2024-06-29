@@ -1,4 +1,4 @@
-namespace ToDoBot.Infrastructure.Options;
+namespace Krevetki.ToDoBot.Infrastructure.Options;
 
 public class TelegramOptions
 {

@@ -1,6 +1,6 @@
-namespace ToDoBot.Application.Common.Models;
+namespace Krevetki.ToDoBot.Application.Common.Models;
 
 public class InlineKeyboard
 {
-    public List<List<Button>> Buttons { get; set; }
+    public List<List<Button>> Buttons { get; set; } = [[]];
 }

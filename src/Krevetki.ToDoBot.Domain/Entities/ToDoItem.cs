@@ -1,14 +1,15 @@
-﻿using ToDoBot.Domain.Enums;
+﻿using Krevetki.ToDoBot.Domain.Entities.Base;
+using Krevetki.ToDoBot.Domain.Enums;
 
-namespace ToDoBot.Domain.Entities;
+namespace Krevetki.ToDoBot.Domain.Entities;
 
 public class ToDoItem : EntityBase
 {
-    public DateOnly DateToStart { get; set; }
-
-    public TimeOnly TimeToStart { get; set; }
+    public DateTime DateTimeToStart { get; set; }
 
     public string Title { get; set; } = default!;
 
     public ToDoItemStatus Status { get; set; }
+
+    public Guid UserId { get; set; }
 }

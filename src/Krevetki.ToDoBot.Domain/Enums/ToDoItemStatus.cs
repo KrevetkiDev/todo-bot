@@ -1,4 +1,4 @@
-﻿namespace ToDoBot.Domain.Enums;
+﻿namespace Krevetki.ToDoBot.Domain.Enums;
 
 public enum ToDoItemStatus
 {

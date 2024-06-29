@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Infrastructure.Options;
+using Krevetki.ToDoBot.Infrastructure.Persistence;
+using Krevetki.ToDoBot.Infrastructure.Persistence.Repository;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using ToDoBot.Application;
-using ToDoBot.Infrastructure.Options;
-using ToDoBot.Infrastructure.Persistence;
-using ToDoBot.Infrastructure.Persistence.Repository;
-
-namespace ToDoBot.Infrastructure;
+namespace Krevetki.ToDoBot.Infrastructure;
 
 public static class DependencyInjection
 {

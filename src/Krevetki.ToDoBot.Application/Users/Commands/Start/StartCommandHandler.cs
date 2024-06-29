@@ -1,9 +1,12 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using ToDoBot.Application.Models.Models;
-using ToDoBot.Domain;
+using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Application.Common.Models;
+using Krevetki.ToDoBot.Domain.Entities;
 
-namespace ToDoBot.Application.Users.Commands.Start;
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace Krevetki.ToDoBot.Application.Users.Commands.Start;
 
 public record StartCommandHandler(IRepository Repository) : IRequestHandler<StartCommand, Message>
 {
@@ -14,18 +17,11 @@ public record StartCommandHandler(IRepository Repository) : IRequestHandler<Star
         var user = transaction.Set.AsNoTracking().FirstOrDefault(x => x.TelegramId == request.TelegramId);
         if (user == null)
         {
-            user = new User
-            {
-                TelegramId = request.TelegramId,
-                Username = request.Username,
-            };
+            user = new User { TelegramId = request.TelegramId, Username = request.Username, ChatId = request.ChatId };
             transaction.Add(user);
             await transaction.CommitAsync(cancellationToken);
         }
 
-        return new Message
-        {
-            Text = Messages.StartMessage
-        };
+        return new Message { Text = Messages.StartMessage };
     }
 }

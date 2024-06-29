@@ -1,6 +1,6 @@
-﻿using ToDoBot.Domain.Entities;
+﻿using Krevetki.ToDoBot.Domain.Entities.Base;
 
-namespace ToDoBot.Domain;
+namespace Krevetki.ToDoBot.Domain.Entities;
 
 public class User : EntityBase
 {
@@ -13,4 +13,6 @@ public class User : EntityBase
     public TimeOnly? EveningNotificationTime { get; set; }
 
     public int TimeZone { get; set; }
+
+    public long ChatId { get; set; }
 }

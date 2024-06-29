@@ -1,6 +1,6 @@
-using ToDoBot.Application.Models.Models;
+using Krevetki.ToDoBot.Application.Common.Models;
 
-namespace ToDoBot.Application.Common.Models;
+namespace Krevetki.ToDoBot.Application.Common.Helpers;
 
 public class ToDoItemParser
 {
@@ -8,9 +8,9 @@ public class ToDoItemParser
     {
         var stringItems = inputMessage.Split('!', ',');
 
-        if (stringItems.Length >= 3 && DateOnly.TryParse(stringItems[2], out var date) && TimeOnly.TryParse(stringItems[3], out var time))
+        if (stringItems.Length == 3 && DateTime.TryParse(stringItems[2], out var dateTime))
         {
-            dto = new ToDoItemDto { Title = stringItems[1], DateToStart = date, TimeToStart = time };
+            dto = new ToDoItemDto { Title = stringItems[1], DateTimeToStart = dateTime };
 
             return true;
         }
