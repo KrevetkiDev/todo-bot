@@ -23,7 +23,7 @@ public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageServic
         var todayTasksList = await transaction.Set
                                               .AsNoTracking()
                                               .Where(
-                                                  x => x.DateTimeToStart == DateTime.Now.ToUniversalTime()
+                                                  x => x.DateTimeToStart.Date == DateTime.Now.ToUniversalTime().Date
                                                        && x.Status == ToDoItemStatus.New)
                                               .ToListAsync(cancellationToken);
 

@@ -1,3 +1,4 @@
+using Krevetki.ToDoBot.Application.Common;
 using Krevetki.ToDoBot.Domain.Entities;
 
 namespace Krevetki.ToDoBot.Application;
@@ -14,9 +15,17 @@ public class Messages
     public static string AddTodoSuccessMessage(string task, DateTime dateTimeToStart) =>
         $"Дело: {task} . Запланировано на {dateTimeToStart.ToLocalTime()}. Напомнить?";
 
-    public static string ToDoTaskToString(ToDoItem todoTask)
+    public static string ToDoTaskToString(ToDoItem todoTask, bool isNotificationExists)
     {
-        var task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}";
+        string task;
+        if (!isNotificationExists)
+        {
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationsActiv}";
+        }
+        else
+        {
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationNotActiv}";
+        }
 
         return task;
     }
