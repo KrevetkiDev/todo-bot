@@ -20,11 +20,11 @@ public class Messages
         string task;
         if (!isNotificationExists)
         {
-            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationsActiv}";
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationsActive}";
         }
         else
         {
-            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationNotActiv}";
+            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationNotActive}";
         }
 
         return task;

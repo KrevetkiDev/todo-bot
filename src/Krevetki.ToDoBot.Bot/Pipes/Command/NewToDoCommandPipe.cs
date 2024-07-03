@@ -14,21 +14,15 @@ public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
 
     protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
     {
-        ToDoItemParser toDoItemParser = new ToDoItemParser();
+        var toDoItemParser = new ToDoItemParser();
         if (!toDoItemParser.TryParseToDoItem(context.Message, out var toDoItemDto))
         {
-            context.ResponseMessages.Add(new Message { Text = Messages.AddTodoErrorMessage });
+            await Mediator.Send(new Message { Text = Messages.AddTodoErrorMessage }, cancellationToken);
             return;
         }
 
-        var response =
-            await Mediator.Send(
-                new NewToDoCommand() { TelegramId = context.TelegramId, Username = context.Username, ToDoItemDto = toDoItemDto },
-                cancellationToken);
-
-        foreach (var message in response)
-        {
-            context.ResponseMessages.Add(message);
-        }
+        await Mediator.Send(
+            new NewToDoCommand() { User = context.User, ToDoItemDto = toDoItemDto },
+            cancellationToken);
     }
 }

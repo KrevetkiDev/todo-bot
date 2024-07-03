@@ -5,7 +5,11 @@ using MediatR;
 
 namespace Krevetki.ToDoBot.Application.Users.Queries.Help;
 
-public class NewTaskQueryHandler(IRepository Repository) : IRequestHandler<HelpTaskQuery, Message>
+public record NewTaskQueryHandler(IMessageService MessageService) : IRequestHandler<HelpTaskQuery>
 {
-    public async Task<Message> Handle(HelpTaskQuery request, CancellationToken cancellationToken) => new() { Text = Messages.HelpMessage };
+    public async Task Handle(HelpTaskQuery request, CancellationToken cancellationToken) =>
+        await MessageService.SendMessageAsync(
+            new Message() { Text = Messages.HelpMessage },
+            request.User.ChatId,
+            cancellationToken);
 }

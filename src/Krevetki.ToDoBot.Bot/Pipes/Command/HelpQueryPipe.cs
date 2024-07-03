@@ -10,11 +10,6 @@ public record HelpQueryPipe(IMediator Mediator) : CommandPipeBase
 {
     protected override string ApplicableMessage => Commands.HelpCommand;
 
-    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
-    {
-        var response =
-            await Mediator.Send(new HelpTaskQuery { TelegramId = context.TelegramId, Username = context.Username }, cancellationToken);
-
-        context.ResponseMessages.Add(response);
-    }
+    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken) =>
+        await Mediator.Send(new HelpTaskQuery { User = context.User }, cancellationToken);
 }

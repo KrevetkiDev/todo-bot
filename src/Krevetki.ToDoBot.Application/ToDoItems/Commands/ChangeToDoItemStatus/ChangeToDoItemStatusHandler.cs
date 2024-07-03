@@ -10,13 +10,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
 
 public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageService MessageService)
-    : IRequestHandler<ChangeToDoItemStatusCommand, Message>
+    : IRequestHandler<ChangeToDoItemStatusCommand>
 {
-    public async Task<Message> Handle(ChangeToDoItemStatusCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ChangeToDoItemStatusCommand request, CancellationToken cancellationToken)
     {
         await using var transaction = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);
 
         var toDoItem = transaction.Set.FirstOrDefault(x => x.Id == request.ToDoItemId);
+
+        if (toDoItem == null) return;
 
         toDoItem.Status = request.ToDoItemStatus;
 
@@ -31,14 +33,20 @@ public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageServic
 
         if (request.ToDoItemStatus != ToDoItemStatus.New)
         {
-            await MessageService.DeleteMessageAsync(request.MessageId, request.ChatId, cancellationToken);
+            await MessageService.DeleteMessageAsync(request.MessageId, request.User.ChatId, cancellationToken);
         }
 
         if (todayTasksList.Count == 0)
         {
-            return new Message() { Text = Messages.NoTasksTodayMessage };
+            await MessageService.SendMessageAsync(
+                new Message() { Text = Messages.NoTasksTodayMessage },
+                request.User.ChatId,
+                cancellationToken);
         }
 
-        return new Message() { Text = Messages.CountTask(todayTasksList.Count - 1) };
+        await MessageService.SendMessageAsync(
+            new Message() { Text = Messages.CountTask(todayTasksList.Count - 1) },
+            request.User.ChatId,
+            cancellationToken);
     }
 }
