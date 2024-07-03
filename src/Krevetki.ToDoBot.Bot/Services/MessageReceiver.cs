@@ -19,7 +19,7 @@ public record MessageReceiver(IEnumerable<IPipe<PipeContext>> Pipes, IMessageSer
 
         var user = transaction.Set.FirstOrDefault(x => x.TelegramId == update.Message.From.Id);
 
-        PipeContext context;
+        PipeContext context = null;
 
         if (user is null && update.Message?.Text == Commands.StartCommand)
         {
@@ -33,21 +33,16 @@ public record MessageReceiver(IEnumerable<IPipe<PipeContext>> Pipes, IMessageSer
                                  },
                           Message = update.Message.Text
                       };
-
-            foreach (var pipe in Pipes)
-            {
-                await pipe.HandleAsync(context, cancellationToken);
-            }
         }
 
         if (user is not null)
         {
             context = new PipeContext { User = user, Message = update.Message.Text! };
+        }
 
-            foreach (var pipe in Pipes)
-            {
-                await pipe.HandleAsync(context, cancellationToken);
-            }
+        foreach (var pipe in Pipes)
+        {
+            await pipe.HandleAsync(context!, cancellationToken);
         }
     }
 }
