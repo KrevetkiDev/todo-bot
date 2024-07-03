@@ -19,7 +19,6 @@ public record ChangeToDoItemStatusCommandPipe(IMediator Mediator) : CallbackQuer
         {
             callbackData.Data.User = context.User;
             callbackData.Data.MessageId = context.MessageId;
-            callbackData.Data.User.ChatId = context.User.ChatId;
             await Mediator.Send(callbackData.Data, cancellationToken);
         }
     }

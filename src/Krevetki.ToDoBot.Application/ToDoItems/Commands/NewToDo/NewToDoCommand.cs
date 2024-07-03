@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 
-public class NewToDoCommand : IRequest<List<Message>>, IRequest
+public class NewToDoCommand : IRequest
 {
     public ToDoItemDto ToDoItemDto { get; set; }
 

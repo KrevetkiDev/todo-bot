@@ -1,4 +1,3 @@
-using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
 
@@ -6,7 +5,7 @@ using MediatR;
 
 namespace Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
 
-public class ChangeToDoItemStatusCommand : IRequest<Message>, IRequest
+public class ChangeToDoItemStatusCommand : IRequest
 {
     public ToDoItemStatus ToDoItemStatus { get; set; }
 

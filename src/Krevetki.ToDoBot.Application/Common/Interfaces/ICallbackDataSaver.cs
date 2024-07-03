@@ -5,8 +5,8 @@ public interface ICallbackDataSaver
     /// <summary>
     /// Сохраняет объект как CallbackData в виде json
     /// </summary>
-    /// <param name="data"></param>
+    /// <param name="data">Обьект который упакуется в CallbckData<T></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>id callbackData</returns>
     Task<Guid> SaveCallbackDataAsync(object data, CancellationToken cancellationToken);
 }

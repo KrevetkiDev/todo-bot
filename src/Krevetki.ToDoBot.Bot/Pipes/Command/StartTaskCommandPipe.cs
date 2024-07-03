@@ -10,10 +10,8 @@ public record StartTaskCommandPipe(IMediator Mediator) : CommandPipeBase
 {
     protected override string ApplicableMessage => Commands.StartCommand;
 
-    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
-    {
+    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken) =>
         await Mediator.Send(
             new StartCommand { User = context.User },
             cancellationToken);
-    }
 }

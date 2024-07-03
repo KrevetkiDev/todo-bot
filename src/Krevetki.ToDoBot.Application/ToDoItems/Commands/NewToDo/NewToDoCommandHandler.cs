@@ -1,6 +1,7 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus;
+using Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
 
@@ -9,7 +10,7 @@ using MediatR;
 using Message = Krevetki.ToDoBot.Application.Common.Models.Message;
 using User = Krevetki.ToDoBot.Domain.Entities.User;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.NewToDo;
 
 public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver CallbackDataSaver, IMessageService MessageService)
     : IRequestHandler<NewToDoCommand>
@@ -18,11 +19,13 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
     {
         await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
 
-        var user = transaction.Set.FirstOrDefault(x => x.TelegramId == request.User.TelegramId);
-
-        if (user == null)
+        if (request.User == null)
         {
-            await MessageService.SendMessageAsync(new Message { Text = Messages.UserNotFoundMessage }, user.ChatId, cancellationToken);
+            await MessageService.SendMessageAsync(
+                new Message { Text = Messages.UserNotFoundMessage },
+                request.User.ChatId,
+                cancellationToken);
+            return;
         }
 
         var todoItem = new ToDoItem
@@ -30,11 +33,11 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
                            Title = request.ToDoItemDto.Title, DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime()
                        };
 
-        user.Tasks.Add(todoItem);
+        request.User.Tasks.Add(todoItem);
 
         await transaction.CommitAsync(cancellationToken);
 
-        var keyboard = await GetKeyboard(todoItem, user, cancellationToken);
+        var keyboard = await GetKeyboard(todoItem, cancellationToken);
 
         await MessageService.SendMessageAsync(
             new Message
@@ -42,11 +45,11 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
                 Text = Messages.AddTodoSuccessMessageIfLessThanHourBeforeEvent(todoItem.Title, todoItem.DateTimeToStart),
                 Keyboard = keyboard
             },
-            user.ChatId,
+            request.User.ChatId,
             cancellationToken);
     }
 
-    private async Task<InlineKeyboard> GetKeyboard(ToDoItem todoItem, User user, CancellationToken cancellationToken)
+    private async Task<InlineKeyboard> GetKeyboard(ToDoItem todoItem, CancellationToken cancellationToken)
     {
         var keyboard = new InlineKeyboard();
 

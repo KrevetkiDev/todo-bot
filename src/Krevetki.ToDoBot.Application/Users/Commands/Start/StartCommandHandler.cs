@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Krevetki.ToDoBot.Application.Users.Commands.Start;
 
-public record StartCommandHandler(IRepository Repository) : IRequestHandler<StartCommand, Message>
+public record StartCommandHandler(IRepository Repository, IMessageService MessageService) : IRequestHandler<StartCommand>
 {
-    public async Task<Message> Handle(StartCommand request, CancellationToken cancellationToken)
+    public async Task Handle(StartCommand request, CancellationToken cancellationToken)
     {
         await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
 
@@ -22,6 +22,6 @@ public record StartCommandHandler(IRepository Repository) : IRequestHandler<Star
             await transaction.CommitAsync(cancellationToken);
         }
 
-        return new Message { Text = Messages.StartMessage };
+        await MessageService.SendMessageAsync(new Message { Text = Messages.StartMessage }, user.ChatId, cancellationToken);
     }
 }

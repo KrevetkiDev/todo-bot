@@ -18,7 +18,9 @@ public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageServic
 
         var toDoItem = transaction.Set.FirstOrDefault(x => x.Id == request.ToDoItemId);
 
-        if (toDoItem != null) toDoItem.Status = request.ToDoItemStatus;
+        if (toDoItem == null) return;
+
+        toDoItem.Status = request.ToDoItemStatus;
 
         var todayTasksList = await transaction.Set
                                               .AsNoTracking()

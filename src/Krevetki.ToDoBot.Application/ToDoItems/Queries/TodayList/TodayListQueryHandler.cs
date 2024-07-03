@@ -1,6 +1,7 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
+using Krevetki.ToDoBot.Application.ToDoItems.TodayList;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
 
@@ -8,7 +9,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Queries.TodayList;
 
 public record TodayListQueryHandler(IRepository Repository, ICallbackDataSaver CallbackDataSaver, IMessageService MessageService)
     : IRequestHandler<TodayListQuery>
@@ -17,7 +18,6 @@ public record TodayListQueryHandler(IRepository Repository, ICallbackDataSaver C
     {
         await using var transactionToDoItem = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);
         await using var transactionNotification = await Repository.BeginTransactionAsync<Notification>(cancellationToken);
-        await using var transactionUser = await Repository.BeginTransactionAsync<User>(cancellationToken);
 
         var todayTasksList = await transactionToDoItem.Set
                                                       .AsNoTracking()
