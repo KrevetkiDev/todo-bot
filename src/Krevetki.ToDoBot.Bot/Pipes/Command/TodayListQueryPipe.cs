@@ -10,14 +10,6 @@ public record TodayListQueryPipe(IMediator Mediator) : CommandPipeBase
 {
     protected override string ApplicableMessage => Commands.TodayListCommand;
 
-    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
-    {
-        var response =
-            await Mediator.Send(new TodayListQuery { TelegramId = context.TelegramId }, cancellationToken);
-
-        foreach (var message in response)
-        {
-            context.ResponseMessages.Add(message);
-        }
-    }
+    protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken) =>
+        await Mediator.Send(new TodayListQuery { User = context.User }, cancellationToken);
 }

@@ -14,10 +14,10 @@ public record StartCommandHandler(IRepository Repository) : IRequestHandler<Star
     {
         await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
 
-        var user = transaction.Set.AsNoTracking().FirstOrDefault(x => x.TelegramId == request.TelegramId);
+        var user = transaction.Set.AsNoTracking().FirstOrDefault(x => x.TelegramId == request.User.TelegramId);
         if (user == null)
         {
-            user = new User { TelegramId = request.TelegramId, Username = request.Username, ChatId = request.ChatId };
+            user = new User { TelegramId = request.User.TelegramId, Username = request.User.Username, ChatId = request.User.ChatId };
             transaction.Add(user);
             await transaction.CommitAsync(cancellationToken);
         }

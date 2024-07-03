@@ -12,11 +12,8 @@ public record StartTaskCommandPipe(IMediator Mediator) : CommandPipeBase
 
     protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
     {
-        var response =
-            await Mediator.Send(
-                new StartCommand { TelegramId = context.TelegramId, Username = context.Username, ChatId = context.ChatId },
-                cancellationToken);
-
-        context.ResponseMessages.Add(response);
+        await Mediator.Send(
+            new StartCommand { User = context.User },
+            cancellationToken);
     }
 }

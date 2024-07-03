@@ -19,8 +19,8 @@
     </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Notifications\"/>
-    <Folder Include="ToDoItems\"/>
+    <Folder Include="Notifications\Commands\"/>
+    <Folder Include="ToDoItems\Queries\"/>
   </ItemGroup>
 
 </Project>

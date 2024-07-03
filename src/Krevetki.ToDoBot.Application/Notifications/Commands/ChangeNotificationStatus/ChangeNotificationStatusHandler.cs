@@ -1,19 +1,21 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
+using Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus;
 using Krevetki.ToDoBot.Domain.Entities;
 
 using MediatR;
 
-namespace Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus
+namespace Krevetki.ToDoBot.Application.Notifications.Commands.ChangeNotificationStatus
 {
-    public record ChangeNotificationStatusHandler(IRepository Repository) : IRequestHandler<ChangeNotificationStatusCommand, Message>
+    public record ChangeNotificationStatusHandler(IRepository Repository, IMessageService MessageService)
+        : IRequestHandler<ChangeNotificationStatusCommand>
     {
-        public async Task<Message> Handle(ChangeNotificationStatusCommand request, CancellationToken cancellationToken)
+        public async Task Handle(ChangeNotificationStatusCommand request, CancellationToken cancellationToken)
         {
             await using var transactionNotification = await Repository.BeginTransactionAsync<Notification>(cancellationToken);
             var notification = transactionNotification.Set.FirstOrDefault(x => x.ToDoItemId == request.ToDoItemId);
 
-            if ((request.TimeInterval != null)
+            if (request.TimeInterval != null
                 && notification == null)
             {
                 await using var transactionToDoItem = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);
@@ -32,16 +34,28 @@ namespace Krevetki.ToDoBot.Application.Notifications.ChangeNotificationStatus
                     transactionNotification.Add(newNotification);
                     await transactionNotification.CommitAsync(cancellationToken: cancellationToken);
 
-                    return new Message() { Text = Messages.NotificationOn };
+                    await MessageService.SendMessageAsync(
+                        new Message() { Text = Messages.NotificationOn },
+                        request.User.ChatId,
+                        cancellationToken);
                 }
             }
 
             if (request.TimeInterval == null && notification == null)
             {
-                return new Message() { Text = Messages.NotificationDisable };
+                await MessageService.SendMessageAsync(
+                    new Message() { Text = Messages.NotificationDisable },
+                    request.User.ChatId,
+                    cancellationToken);
             }
 
-            return new Message() { Text = Messages.NotificationAlreadyExist };
+            if (notification != null)
+            {
+                await MessageService.SendMessageAsync(
+                    new Message() { Text = Messages.NotificationAlreadyExist },
+                    request.User.ChatId,
+                    cancellationToken);
+            }
         }
     }
 }

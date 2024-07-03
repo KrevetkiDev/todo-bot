@@ -15,11 +15,11 @@ public record ChangeNotificationStatusPipe(IMediator Mediator) : CallbackQueryPi
     protected override async Task HandleInternal(CallbackQueryPipeContext context, CancellationToken cancellationToken)
     {
         var callbackData = JsonConvert.DeserializeObject<CallbackData<ChangeNotificationStatusCommand>>(context.Data);
+
         if (callbackData != null)
         {
-            var message = await Mediator.Send(callbackData.Data, cancellationToken);
-
-            context.ResponseMessages.Add(message);
+            callbackData.Data.User = context.User;
+            await Mediator.Send(callbackData.Data, cancellationToken);
         }
     }
 }

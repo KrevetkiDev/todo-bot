@@ -20,13 +20,7 @@ public class Commands
 
     public const string NotificationInThreeHours = "За три часа";
 
-    public const string NotificationsActiv = "\ud83d\udd14";
+    public const string NotificationsActive = "\ud83d\udd14";
 
-    public const string NotificationNotActiv = "\ud83d\udd15";
-
-    public const string NotificationDisableCallbackdata = "Disable";
-
-    public const string NotificationCallbackDataStatusDone = "Done";
-
-    public const string NotificationCallbackDataStatusUndone = "Undone";
+    public const string NotificationNotActive = "\ud83d\udd15";
 }

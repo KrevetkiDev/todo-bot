@@ -17,11 +17,10 @@ public record ChangeToDoItemStatusCommandPipe(IMediator Mediator) : CallbackQuer
         var callbackData = JsonConvert.DeserializeObject<CallbackData<ChangeToDoItemStatusCommand>>(context.Data);
         if (callbackData != null)
         {
+            callbackData.Data.User = context.User;
             callbackData.Data.MessageId = context.MessageId;
-            callbackData.Data.ChatId = context.ChatId;
-            var message = await Mediator.Send(callbackData.Data, cancellationToken);
-
-            context.ResponseMessages.Add(message);
+            callbackData.Data.User.ChatId = context.User.ChatId;
+            await Mediator.Send(callbackData.Data, cancellationToken);
         }
     }
 }
