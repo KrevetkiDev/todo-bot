@@ -18,7 +18,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<TelegramOptions>().Bind(configuration.GetSection("TelegramOptions"));
+        services.AddOptions<TelegramOptions>().Bind(configuration.GetSection(nameof(TelegramOptions)));
+        services.AddOptions<EveningNotificationOptions>().Bind(configuration.GetSection(nameof(EveningNotificationOptions)));
         return services;
     }
 

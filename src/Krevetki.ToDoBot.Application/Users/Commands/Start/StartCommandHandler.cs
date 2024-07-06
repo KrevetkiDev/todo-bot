@@ -1,6 +1,7 @@
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Domain.Enums;
 
 using MediatR;
 
@@ -17,7 +18,13 @@ public record StartCommandHandler(IRepository Repository, IMessageService Messag
         var user = transaction.Set.AsNoTracking().FirstOrDefault(x => x.TelegramId == request.User.TelegramId);
         if (user == null)
         {
-            user = new User { TelegramId = request.User.TelegramId, Username = request.User.Username, ChatId = request.User.ChatId };
+            user = new User
+                   {
+                       TelegramId = request.User.TelegramId,
+                       Username = request.User.Username,
+                       ChatId = request.User.ChatId,
+                       EveningNotificationStatus = EveningNotificationStatus.Active
+                   };
             transaction.Add(user);
             await transaction.CommitAsync(cancellationToken);
         }

@@ -23,4 +23,6 @@ public class Commands
     public const string NotificationsActive = "\ud83d\udd14";
 
     public const string NotificationNotActive = "\ud83d\udd15";
+
+    public const string EveningNotification = "/even";
 }
