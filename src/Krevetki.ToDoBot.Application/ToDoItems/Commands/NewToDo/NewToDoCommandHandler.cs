@@ -8,7 +8,6 @@ using Krevetki.ToDoBot.Domain.Enums;
 using MediatR;
 
 using Message = Krevetki.ToDoBot.Application.Common.Models.Message;
-using User = Krevetki.ToDoBot.Domain.Entities.User;
 
 namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.NewToDo;
 
@@ -17,7 +16,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 {
     public async Task Handle(NewToDoCommand request, CancellationToken cancellationToken)
     {
-        await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
+        await using var transaction = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);
 
         if (request.User == null)
         {
@@ -30,10 +29,12 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         var todoItem = new ToDoItem
                        {
-                           Title = request.ToDoItemDto.Title, DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime()
+                           Title = request.ToDoItemDto.Title,
+                           DateTimeToStart = request.ToDoItemDto.DateTimeToStart.ToUniversalTime(),
+                           UserId = request.User.Id
                        };
 
-        request.User.Tasks.Add(todoItem);
+        transaction.Add(todoItem);
 
         await transaction.CommitAsync(cancellationToken);
 
@@ -84,7 +85,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.DisableNotification,
+                   Title = ButtonsTittles.DisableNotification,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        disableNotificationCallbackData,
                                        cancellationToken)).ToString(),
@@ -102,7 +103,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInHour,
+                   Title = ButtonsTittles.NotificationInHour,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()
@@ -120,7 +121,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInThreeHours,
+                   Title = ButtonsTittles.NotificationInThreeHours,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()
@@ -138,7 +139,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInDay,
+                   Title = ButtonsTittles.NotificationInDay,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()

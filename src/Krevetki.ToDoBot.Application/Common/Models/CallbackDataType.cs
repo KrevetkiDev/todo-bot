@@ -4,5 +4,9 @@ public enum CallbackDataType
 {
     TaskStatus,
 
-    NotificationInterval
+    NotificationInterval,
+
+    EveningNotificationStatus,
+
+    YesterdayTasksMoveToday
 }

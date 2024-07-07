@@ -3,17 +3,20 @@ using System;
 using Krevetki.ToDoBot.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ToDoBot.Infrastructure.Persistence.Migrations
+namespace Krevetki.ToDoBot.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240703110541_ReplaceTypeEveningNotification")]
+    partial class ReplaceTypeEveningNotification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,9 +100,8 @@ namespace ToDoBot.Infrastructure.Persistence.Migrations
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("EveningNotificationStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("EveningNotificationStatus")
+                        .HasColumnType("integer");
 
                     b.Property<long>("TelegramId")
                         .HasColumnType("bigint");

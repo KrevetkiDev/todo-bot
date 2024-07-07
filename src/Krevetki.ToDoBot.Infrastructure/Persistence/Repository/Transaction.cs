@@ -31,7 +31,7 @@ public class Transaction<TEntity> : ITransaction<TEntity>
 
     public async Task CommitAsync(CancellationToken cancellationToken)
     {
-        await Context.SaveChangesAsync(cancellationToken);
+        int rows = await Context.SaveChangesAsync(cancellationToken);
         if (_transaction != null)
         {
             await _transaction.CommitAsync(cancellationToken);

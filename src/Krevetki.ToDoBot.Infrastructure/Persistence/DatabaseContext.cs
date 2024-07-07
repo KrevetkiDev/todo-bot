@@ -19,6 +19,9 @@ public class DatabaseContext : DbContext
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<ToDoItem>().Property(x => x.Status).HasConversion<string>();
+        modelBuilder.Entity<User>().Property(x => x.EveningNotificationStatus).HasConversion<string>();
+    }
 }

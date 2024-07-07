@@ -18,6 +18,8 @@ public class TelegramService(
         new() { Command = Commands.HelpCommand, Description = "Описание команд" },
 
         new() { Command = Commands.TodayListCommand, Description = "Список дел на сегодня" },
+
+        new() { Command = Commands.EveningNotification, Description = "Итог дня" }
     ];
 
     public async Task StartAsync(CancellationToken cancellationToken)
