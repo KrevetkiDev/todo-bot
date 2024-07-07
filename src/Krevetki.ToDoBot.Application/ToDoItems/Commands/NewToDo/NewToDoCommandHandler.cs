@@ -85,7 +85,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.DisableNotification,
+                   Title = ButtonsTittles.DisableNotification,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        disableNotificationCallbackData,
                                        cancellationToken)).ToString(),
@@ -103,7 +103,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInHour,
+                   Title = ButtonsTittles.NotificationInHour,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()
@@ -121,7 +121,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInThreeHours,
+                   Title = ButtonsTittles.NotificationInThreeHours,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()
@@ -139,7 +139,7 @@ public record NewToDoCommandHandler(IRepository Repository, ICallbackDataSaver C
 
         return new Button
                {
-                   Title = Common.Commands.NotificationInDay,
+                   Title = ButtonsTittles.NotificationInDay,
                    CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                        inHourNotificationCallbackData,
                                        cancellationToken)).ToString()

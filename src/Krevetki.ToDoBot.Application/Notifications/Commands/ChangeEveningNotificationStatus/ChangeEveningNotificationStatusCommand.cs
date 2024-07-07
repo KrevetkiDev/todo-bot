@@ -1,4 +1,5 @@
 ﻿using Krevetki.ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Domain.Enums;
 
 using MediatR;
 
@@ -8,5 +9,5 @@ public class ChangeEveningNotificationStatusCommand : IRequest
 {
     public User User { get; set; }
 
-    public Domain.Enums.EveningNotificationStatus EveningNotificationStatus { get; set; }
+    public EveningNotificationStatus EveningNotificationStatus { get; set; }
 }

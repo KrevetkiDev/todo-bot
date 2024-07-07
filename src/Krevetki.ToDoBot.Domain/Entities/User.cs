@@ -9,8 +9,6 @@ public class User : EntityBase
 
     public string? Username { get; set; }
 
-    public List<ToDoItem> Tasks { get; set; } = [];
-
     public EveningNotificationStatus EveningNotificationStatus { get; set; }
 
     public int TimeZone { get; set; }

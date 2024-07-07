@@ -1,6 +1,6 @@
 using System.Text;
 
-using Krevetki.ToDoBot.Application.Common;
+using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 
 namespace Krevetki.ToDoBot.Application;
@@ -22,11 +22,13 @@ public class Messages
         string task;
         if (!isNotificationExists)
         {
-            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationsActive}";
+            task =
+                $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {ButtonsTittles.NotificationsActive}";
         }
         else
         {
-            task = $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {Commands.NotificationNotActive}";
+            task =
+                $"Дело: {todoTask.Title}. Запланировано на  {todoTask.DateTimeToStart.ToLocalTime()}. {ButtonsTittles.NotificationNotActive}";
         }
 
         return task;

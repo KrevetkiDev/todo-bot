@@ -5,15 +5,17 @@ using Krevetki.ToDoBot.Domain.Enums;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeEveningNotification;
 
-public class ChangeEveningStatusHandler(IRepository Repository, IMessageService MessageService)
+public record ChangeEveningStatusHandler(IRepository Repository, IMessageService MessageService)
     : IRequestHandler<ChangeEveningNotificationStatusCommand>
 {
     public async Task Handle(ChangeEveningNotificationStatusCommand request, CancellationToken cancellationToken)
     {
         await using var transaction = await Repository.BeginTransactionAsync<User>(cancellationToken);
-        var user = transaction.Set.FirstOrDefault(x => x.Id == request.User.Id);
+        var user = await transaction.Set.FirstOrDefaultAsync(x => x.Id == request.User.Id, cancellationToken: cancellationToken);
 
         var newNotificationStatus = request.EveningNotificationStatus;
 

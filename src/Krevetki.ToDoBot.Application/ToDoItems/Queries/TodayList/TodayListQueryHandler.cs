@@ -70,13 +70,13 @@ public record TodayListQueryHandler(IRepository Repository, ICallbackDataSaver C
                     [
                         new Button
                         {
-                            Title = Common.Commands.DoneTaskCommand,
+                            Title = ButtonsTittles.DoneTaskCommand,
                             CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(doneTaskCallbackData, cancellationToken))
                                 .ToString()
                         },
                         new Button
                         {
-                            Title = Common.Commands.NotToBeDoneTaskCommand,
+                            Title = ButtonsTittles.NotToBeDoneTaskCommand,
                             CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(notDoneTaskCallbackData, cancellationToken))
                                 .ToString()
                         }

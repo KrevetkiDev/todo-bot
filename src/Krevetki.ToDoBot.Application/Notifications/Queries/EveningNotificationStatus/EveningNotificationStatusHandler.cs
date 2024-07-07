@@ -33,7 +33,7 @@ public record EveningNotificationStatusHandler(IRepository Repository, ICallback
                     [
                         new Button
                         {
-                            Title = Common.Commands.NotificationsActive,
+                            Title = ButtonsTittles.NotificationsActive,
                             CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                                 activeEveningNotificationCallbackData,
                                                 cancellationToken))
@@ -41,7 +41,7 @@ public record EveningNotificationStatusHandler(IRepository Repository, ICallback
                         },
                         new Button
                         {
-                            Title = Common.Commands.NotificationNotActive,
+                            Title = ButtonsTittles.NotificationNotActive,
                             CallbackData = (await CallbackDataSaver.SaveCallbackDataAsync(
                                                 disableEveningNotificationCallbackData,
                                                 cancellationToken))

@@ -48,7 +48,7 @@ public record EveningNotificationHandler(IRepository Repository, IMessageService
                    Buttons =
                    [
                        [
-                           new Button { Title = Common.Commands.DoneTaskCommand, CallbackData = callbackDataString }
+                           new Button { Title = ButtonsTittles.DoneTaskCommand, CallbackData = callbackDataString }
                        ]
                    ]
                };
