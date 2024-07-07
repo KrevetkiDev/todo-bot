@@ -34,11 +34,13 @@ public class Messages
         return task;
     }
 
-    public const string StartNewTaskMessage = "!";
+    public const string StartNewTaskSygnalSymbol = "!";
+
+    public const string ListTasksByDateSignalSymbol = "?";
 
     public const string UserNotFoundMessage = "Пользователь не найден. Попробуй нажать команду старт";
 
-    public const string NoTasksTodayMessage = "Сегодня нет дел";
+    public const string NoTasksMessage = "Дел не осталось";
 
     public static string NotificationMessage(ToDoItem toDoItem) =>
         $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.DateTimeToStart.ToLocalTime()}";

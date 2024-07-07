@@ -1,4 +1,5 @@
 ﻿using Krevetki.ToDoBot.Application.Common.Interfaces;
+using Krevetki.ToDoBot.Infrastructure.Common.Extensions;
 using Krevetki.ToDoBot.Infrastructure.Options;
 using Krevetki.ToDoBot.Infrastructure.Persistence;
 using Krevetki.ToDoBot.Infrastructure.Persistence.Repository;
@@ -18,8 +19,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureOptions<TelegramOptions>();
-        services.ConfigureOptions<EveningNotificationOptions>();
+        services.ConfigureOptions<TelegramOptions>(configuration);
+        services.ConfigureOptions<EveningNotificationOptions>(configuration);
         return services;
     }
 

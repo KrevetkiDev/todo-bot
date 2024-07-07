@@ -9,24 +9,24 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.Queries.TodayList;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Queries.ListTasksByDate;
 
-public record TodayListQueryHandler(IRepository Repository, ICallbackDataSaver CallbackDataSaver, IMessageService MessageService)
-    : IRequestHandler<TodayListQuery>
+public record ListTaskByDateHandler(IRepository Repository, ICallbackDataSaver CallbackDataSaver, IMessageService MessageService)
+    : IRequestHandler<ListTaskByDateQuery>
 {
-    public async Task Handle(TodayListQuery request, CancellationToken cancellationToken)
+    public async Task Handle(ListTaskByDateQuery request, CancellationToken cancellationToken)
     {
         await using var transactionToDoItem = await Repository.BeginTransactionAsync<ToDoItem>(cancellationToken);
         await using var transactionNotification = await Repository.BeginTransactionAsync<Notification>(cancellationToken);
 
-        var todayTasksList = await transactionToDoItem.Set
-                                                      .AsNoTracking()
-                                                      .Where(
-                                                          x => x.DateTimeToStart.Date == DateTime.Today.ToUniversalTime().Date
-                                                               && x.Status == ToDoItemStatus.New)
-                                                      .ToListAsync(cancellationToken);
+        var tasksList = await transactionToDoItem.Set
+                                                 .AsNoTracking()
+                                                 .Where(
+                                                     x => DateOnly.FromDateTime(x.DateTimeToStart.Date) == request.Date.Date
+                                                          && x.Status == ToDoItemStatus.New)
+                                                 .ToListAsync(cancellationToken);
 
-        foreach (var item in todayTasksList)
+        foreach (var item in tasksList)
         {
             await MessageService.SendMessageAsync(
                 await GetToDoItemMessage(item, transactionNotification, cancellationToken),
@@ -34,7 +34,7 @@ public record TodayListQueryHandler(IRepository Repository, ICallbackDataSaver C
                 cancellationToken);
         }
 
-        if (todayTasksList.Count == 0)
+        if (tasksList.Count == 0)
         {
             await MessageService.SendMessageAsync(
                 new Message { Text = Messages.NoTasksMessage },

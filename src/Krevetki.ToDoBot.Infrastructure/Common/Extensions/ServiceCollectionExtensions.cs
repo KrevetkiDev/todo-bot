@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Krevetki.ToDoBot.Infrastructure.Common.Extension;
+namespace Krevetki.ToDoBot.Infrastructure.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {

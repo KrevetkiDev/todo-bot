@@ -4,11 +4,11 @@ namespace Krevetki.ToDoBot.Bot.Pipes.Base;
 
 public abstract record CommandPipeBase : IPipe<PipeContext>
 {
-    protected abstract string ApplicableMessage { get; }
+    protected abstract string ApplicableSygnalSymbol { get; }
 
     public async Task HandleAsync(PipeContext context, CancellationToken cancellationToken)
     {
-        if (context.Message.StartsWith(ApplicableMessage))
+        if (context.Message.StartsWith(ApplicableSygnalSymbol))
         {
             await HandleInternal(context, cancellationToken);
         }

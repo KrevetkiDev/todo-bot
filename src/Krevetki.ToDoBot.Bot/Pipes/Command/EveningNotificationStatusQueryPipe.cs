@@ -8,7 +8,7 @@ namespace Krevetki.ToDoBot.Bot.Pipes.Command;
 
 public record EveningNotificationStatusQueryPipe(IMediator Mediator) : CommandPipeBase
 {
-    protected override string ApplicableMessage => Commands.EveningNotification;
+    protected override string ApplicableSygnalSymbol => Commands.EveningNotification;
 
     protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken) =>
         await Mediator.Send(new EveningNotificationStatusQuery { User = context.User }, cancellationToken);

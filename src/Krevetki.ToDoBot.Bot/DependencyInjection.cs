@@ -29,6 +29,7 @@ public static class DependencyInjection
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeNotificationStatusPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeToDoItemStatusCommandPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeDateYesterdayToDoItemsPipe>()
+                .AddSingleton<IPipe<PipeContext>, ListTaskByDatePipe>()
                 .AddHostedService<NotificationService>(p => (p.GetRequiredService<INotificationService>() as NotificationService)!)
                 .AddHostedService<TelegramService>(p => (p.GetRequiredService<ITelegramService>() as TelegramService)!)
                 .AddHostedService<EveningNotificationService>(
