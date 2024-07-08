@@ -1,13 +1,11 @@
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Domain.Entities;
 
 using MediatR;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.NewToDo;
 
-public class NewToDoCommand : IRequest
+public class NewToDoCommand : UserRequest, IRequest
 {
     public ToDoItemDto ToDoItemDto { get; set; }
 
-    public User User { get; set; }
 }

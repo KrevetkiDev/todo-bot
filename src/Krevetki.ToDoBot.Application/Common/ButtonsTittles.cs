@@ -1,4 +1,4 @@
-namespace Krevetki.ToDoBot.Application.Common.Models;
+namespace Krevetki.ToDoBot.Application.Common;
 
 public class ButtonsTittles
 {

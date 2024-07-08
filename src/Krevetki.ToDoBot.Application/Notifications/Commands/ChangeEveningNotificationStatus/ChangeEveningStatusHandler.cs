@@ -1,4 +1,5 @@
-﻿using Krevetki.ToDoBot.Application.Common.Interfaces;
+﻿using Krevetki.ToDoBot.Application.Common;
+using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
@@ -7,7 +8,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeEveningNotification;
+namespace Krevetki.ToDoBot.Application.Notifications.Commands.ChangeEveningNotificationStatus;
 
 public record ChangeEveningStatusHandler(IRepository Repository, IMessageService MessageService)
     : IRequestHandler<ChangeEveningNotificationStatusCommand>

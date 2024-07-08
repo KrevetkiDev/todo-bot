@@ -1,9 +1,8 @@
 using System.Text;
 
-using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 
-namespace Krevetki.ToDoBot.Application;
+namespace Krevetki.ToDoBot.Application.Common;
 
 public class Messages
 {

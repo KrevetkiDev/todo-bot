@@ -1,5 +1,5 @@
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
+using Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeToDoItemStatus;
 using Krevetki.ToDoBot.Bot.Pipes.Base;
 
 using MediatR;
@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Krevetki.ToDoBot.Bot.Pipes.Callback;
 
-public record ChangeToDoItemStatusCommandPipe(IMediator Mediator) : CallbackQueryPipeBase
+public record ChangeToDoItemStatusCommandPipe(IMediator Mediator) : CallbackQueryPipeBase(Mediator)
 {
     protected override CallbackDataType ApplicableMessage => CallbackDataType.TaskStatus;
 
