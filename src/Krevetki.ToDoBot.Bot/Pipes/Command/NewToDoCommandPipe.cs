@@ -1,5 +1,6 @@
 using Krevetki.ToDoBot.Application;
 using Krevetki.ToDoBot.Application.Common.Helpers;
+using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Application.ToDoItems.NewToDo;
 using Krevetki.ToDoBot.Bot.Pipes.Base;
@@ -8,7 +9,7 @@ using MediatR;
 
 namespace Krevetki.ToDoBot.Bot.Pipes.Command;
 
-public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
+public record NewToDoCommandPipe(IMediator Mediator, IMessageService MessageService) : CommandPipeBase
 {
     protected override string ApplicableSygnalSymbol => Messages.StartNewTaskSygnalSymbol;
 
@@ -17,7 +18,10 @@ public record NewToDoCommandPipe(IMediator Mediator) : CommandPipeBase
         var toDoItemParser = new ToDoItemParser();
         if (!toDoItemParser.TryParseToDoItem(context.Message, out var toDoItemDto))
         {
-            await Mediator.Send(new Message { Text = Messages.AddTodoErrorMessage }, cancellationToken);
+            await MessageService.SendMessageAsync(
+                new Message { Text = Messages.AddTodoErrorMessage },
+                context.User.ChatId,
+                cancellationToken);
             return;
         }
 
