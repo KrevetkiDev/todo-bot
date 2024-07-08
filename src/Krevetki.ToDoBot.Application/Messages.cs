@@ -45,7 +45,7 @@ public class Messages
     public static string NotificationMessage(ToDoItem toDoItem) =>
         $"Напоминаю! Дело: {toDoItem.Title} запланировано в {toDoItem.DateTimeToStart.ToLocalTime()}";
 
-    public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks} ";
+    public static string CountTask(int countTasks) => $"Оставшихся задач на сегодня: {countTasks - 1} ";
 
     public const string NotificationOn = "Хорошо, обязательно напомню!";
 

@@ -1,21 +1,18 @@
-using Krevetki.ToDoBot.Application.Common.Models;
-
 namespace Krevetki.ToDoBot.Application.Common.Helpers;
 
-public class DateParser
+public static class DateParser
 {
-    public bool TryParseDate(string inputMessage, out DateDto dto)
+    public static bool TryParseDate(string inputMessage, out DateOnly dateList)
     {
-        var stringItems = inputMessage.Split('?');
+        var stringItems = inputMessage.Split(Messages.ListTasksByDateSignalSymbol);
 
         if (stringItems.Length == 2 && DateOnly.TryParse(stringItems[1], out var date))
         {
-            dto = new DateDto() { Date = date };
-
+            dateList = date;
             return true;
         }
 
-        dto = default!;
+        dateList = default!;
         return false;
     }
 }

@@ -14,8 +14,7 @@ public record ListTaskByDatePipe(IMediator Mediator) : CommandPipeBase
 
     protected override async Task HandleInternal(PipeContext context, CancellationToken cancellationToken)
     {
-        var toDoItemParser = new DateParser();
-        if (!toDoItemParser.TryParseDate(context.Message, out var date))
+        if (!DateParser.TryParseDate(context.Message, out var date))
         {
             await Mediator.Send(new Message { Text = Messages.AddTodoErrorMessage }, cancellationToken);
             return;

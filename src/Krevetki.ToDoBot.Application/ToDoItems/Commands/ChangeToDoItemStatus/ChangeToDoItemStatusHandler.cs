@@ -46,7 +46,7 @@ public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageServic
 
         if (todayTasksList.Count > 0)
             await MessageService.SendMessageAsync(
-                new Message() { Text = Messages.CountTask(todayTasksList.Count - 1) },
+                new Message() { Text = Messages.CountTask(todayTasksList.Count) },
                 request.User.ChatId,
                 cancellationToken);
     }

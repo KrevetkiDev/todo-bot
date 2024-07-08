@@ -24,12 +24,12 @@ public static class DependencyInjection
                 .AddSingleton<IPipe<PipeContext>, HelpQueryPipe>()
                 .AddSingleton<IPipe<PipeContext>, NewToDoCommandPipe>()
                 .AddSingleton<IPipe<PipeContext>, TodayListQueryPipe>()
+                .AddSingleton<IPipe<PipeContext>, ListTaskByDatePipe>()
                 .AddSingleton<IPipe<PipeContext>, EveningNotificationStatusQueryPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeEveningNotificationStatusPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeNotificationStatusPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeToDoItemStatusCommandPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeDateYesterdayToDoItemsPipe>()
-                .AddSingleton<IPipe<PipeContext>, ListTaskByDatePipe>()
                 .AddHostedService<NotificationService>(p => (p.GetRequiredService<INotificationService>() as NotificationService)!)
                 .AddHostedService<TelegramService>(p => (p.GetRequiredService<ITelegramService>() as TelegramService)!)
                 .AddHostedService<EveningNotificationService>(

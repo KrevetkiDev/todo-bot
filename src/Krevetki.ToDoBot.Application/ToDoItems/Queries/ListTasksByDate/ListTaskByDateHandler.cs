@@ -22,22 +22,22 @@ public record ListTaskByDateHandler(IRepository Repository, ICallbackDataSaver C
         var tasksList = await transactionToDoItem.Set
                                                  .AsNoTracking()
                                                  .Where(
-                                                     x => DateOnly.FromDateTime(x.DateTimeToStart.Date) == request.Date.Date
+                                                     x => DateOnly.FromDateTime(x.DateTimeToStart.Date) == request.Date
                                                           && x.Status == ToDoItemStatus.New)
                                                  .ToListAsync(cancellationToken);
-
-        foreach (var item in tasksList)
-        {
-            await MessageService.SendMessageAsync(
-                await GetToDoItemMessage(item, transactionNotification, cancellationToken),
-                request.User.ChatId,
-                cancellationToken);
-        }
 
         if (tasksList.Count == 0)
         {
             await MessageService.SendMessageAsync(
                 new Message { Text = Messages.NoTasksMessage },
+                request.User.ChatId,
+                cancellationToken);
+        }
+
+        foreach (var item in tasksList)
+        {
+            await MessageService.SendMessageAsync(
+                await GetToDoItemMessage(item, transactionNotification, cancellationToken),
                 request.User.ChatId,
                 cancellationToken);
         }
@@ -50,16 +50,19 @@ public record ListTaskByDateHandler(IRepository Repository, ICallbackDataSaver C
     {
         var notification = transaction.Set.FirstOrDefault(x => x.ToDoItem.Id == item.Id);
 
-        var doneTaskCallbackData =
-            new CallbackData<ChangeToDoItemStatusCommand>
-            {
-                CallbackType = CallbackDataType.TaskStatus, Data = new() { ToDoItemStatus = ToDoItemStatus.Done, ToDoItemId = item.Id }
-            };
+        var doneTaskCallbackData = new CallbackData<ChangeToDoItemStatusCommand>
+                                   {
+                                       CallbackType = CallbackDataType.TaskStatus,
+                                       Data = new ChangeToDoItemStatusCommand { ToDoItemStatus = ToDoItemStatus.Done, ToDoItemId = item.Id }
+                                   };
 
         var notDoneTaskCallbackData = new CallbackData<ChangeToDoItemStatusCommand>
                                       {
                                           CallbackType = CallbackDataType.TaskStatus,
-                                          Data = new() { ToDoItemStatus = ToDoItemStatus.NotToBeDone, ToDoItemId = item.Id }
+                                          Data = new ChangeToDoItemStatusCommand
+                                                 {
+                                                     ToDoItemStatus = ToDoItemStatus.NotToBeDone, ToDoItemId = item.Id
+                                                 }
                                       };
 
         var keyboard =
@@ -84,6 +87,13 @@ public record ListTaskByDateHandler(IRepository Repository, ICallbackDataSaver C
                 ]
             };
 
-        return new Message { Text = Messages.ToDoTaskToString(item, notification == null), Keyboard = keyboard };
+        var messageText = Messages.ToDoTaskToString(item, notification == null);
+
+        if (item.DateTimeToStart.Date >= DateTime.Today.Date)
+        {
+            return new Message { Text = messageText, Keyboard = keyboard };
+        }
+
+        return new Message { Text = messageText };
     }
 }

@@ -1,4 +1,3 @@
-using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
 
 using MediatR;
@@ -9,5 +8,5 @@ public class ListTaskByDateQuery : IRequest
 {
     public User User { get; set; }
 
-    public DateDto Date { get; set; }
+    public DateOnly Date { get; set; }
 }
