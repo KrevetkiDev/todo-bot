@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Notifications\Commands\"/>
-    <Folder Include="ToDoItems\Queries\"/>
   </ItemGroup>
 
 </Project>

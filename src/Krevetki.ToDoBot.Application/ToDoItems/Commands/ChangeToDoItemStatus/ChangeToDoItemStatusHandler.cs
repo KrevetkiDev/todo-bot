@@ -39,14 +39,15 @@ public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageServic
         if (todayTasksList.Count == 0)
         {
             await MessageService.SendMessageAsync(
-                new Message() { Text = Messages.NoTasksTodayMessage },
+                new Message() { Text = Messages.NoTasksMessage },
                 request.User.ChatId,
                 cancellationToken);
         }
 
-        await MessageService.SendMessageAsync(
-            new Message() { Text = Messages.CountTask(todayTasksList.Count - 1) },
-            request.User.ChatId,
-            cancellationToken);
+        if (todayTasksList.Count > 0)
+            await MessageService.SendMessageAsync(
+                new Message() { Text = Messages.CountTask(todayTasksList.Count) },
+                request.User.ChatId,
+                cancellationToken);
     }
 }

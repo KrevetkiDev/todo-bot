@@ -24,6 +24,7 @@ public static class DependencyInjection
                 .AddSingleton<IPipe<PipeContext>, HelpQueryPipe>()
                 .AddSingleton<IPipe<PipeContext>, NewToDoCommandPipe>()
                 .AddSingleton<IPipe<PipeContext>, TodayListQueryPipe>()
+                .AddSingleton<IPipe<PipeContext>, ListTaskByDatePipe>()
                 .AddSingleton<IPipe<PipeContext>, EveningNotificationStatusQueryPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeEveningNotificationStatusPipe>()
                 .AddSingleton<IPipe<CallbackQueryPipeContext>, ChangeNotificationStatusPipe>()
