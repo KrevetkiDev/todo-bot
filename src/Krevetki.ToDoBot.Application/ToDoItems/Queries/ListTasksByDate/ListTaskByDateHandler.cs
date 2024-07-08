@@ -32,6 +32,7 @@ public record ListTaskByDateHandler(IRepository Repository, ICallbackDataSaver C
                 new Message { Text = Messages.NoTasksMessage },
                 request.User.ChatId,
                 cancellationToken);
+            return;
         }
 
         foreach (var item in tasksList)
