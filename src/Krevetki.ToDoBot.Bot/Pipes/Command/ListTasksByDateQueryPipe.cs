@@ -1,8 +1,9 @@
 using Krevetki.ToDoBot.Application;
+using Krevetki.ToDoBot.Application.Common;
 using Krevetki.ToDoBot.Application.Common.Helpers;
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+using Krevetki.ToDoBot.Application.ToDoItems.Queries.ListTasksByDate;
 using Krevetki.ToDoBot.Bot.Pipes.Base;
 
 using MediatR;

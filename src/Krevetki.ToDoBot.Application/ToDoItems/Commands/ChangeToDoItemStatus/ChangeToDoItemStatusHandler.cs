@@ -1,3 +1,4 @@
+using Krevetki.ToDoBot.Application.Common;
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
 using Krevetki.ToDoBot.Domain.Entities;
@@ -7,7 +8,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeToDoItemStatus;
 
 public record ChangeToDoItemStatusHandler(IRepository Repository, IMessageService MessageService)
     : IRequestHandler<ChangeToDoItemStatusCommand>

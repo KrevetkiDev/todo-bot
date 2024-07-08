@@ -8,18 +8,10 @@ using Newtonsoft.Json;
 
 namespace Krevetki.ToDoBot.Bot.Pipes.Callback;
 
-public record ChangeDateYesterdayToDoItemsPipe(IMediator Mediator) : CallbackQueryPipeBase
+public record ChangeDateYesterdayToDoItemsPipe(IMediator Mediator) : CallbackQueryPipeBase(Mediator)
 {
     protected override CallbackDataType ApplicableMessage => CallbackDataType.YesterdayTasksMoveToday;
 
-    protected override async Task HandleInternal(CallbackQueryPipeContext context, CancellationToken cancellationToken)
-    {
-        var callbackData = JsonConvert.DeserializeObject<CallbackData<ChangeDateYesterdayToDoItemsCommand>>(context.Data);
-
-        if (callbackData != null)
-        {
-            callbackData.Data.User = context.User;
-            await Mediator.Send(callbackData.Data, cancellationToken);
-        }
-    }
+    protected override async Task HandleInternal(CallbackQueryPipeContext context, CancellationToken cancellationToken) =>
+        await HandleInternal<ChangeDateYesterdayToDoItemsCommand>(context, cancellationToken);
 }

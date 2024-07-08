@@ -1,12 +1,11 @@
-using Krevetki.ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Application.Common.Models;
 
 using MediatR;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Queries.ListTasksByDate;
 
-public class ListTaskByDateQuery : IRequest
+public class ListTaskByDateQuery : UserRequest,IRequest
 {
-    public User User { get; set; }
 
     public DateOnly Date { get; set; }
 }

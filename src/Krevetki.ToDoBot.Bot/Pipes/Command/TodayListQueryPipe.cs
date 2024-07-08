@@ -1,5 +1,5 @@
 using Krevetki.ToDoBot.Application.Common;
-using Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+using Krevetki.ToDoBot.Application.ToDoItems.Queries.TodayList;
 using Krevetki.ToDoBot.Bot.Pipes.Base;
 
 using MediatR;

@@ -1,7 +1,7 @@
+using Krevetki.ToDoBot.Application.Common;
 using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.ToDoItems.ChangeToDoItemStatus;
-using Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+using Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeToDoItemStatus;
 using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Domain.Enums;
 

@@ -1,10 +1,7 @@
-using Krevetki.ToDoBot.Domain.Entities;
+using Krevetki.ToDoBot.Application.Common.Models;
 
 using MediatR;
 
-namespace Krevetki.ToDoBot.Application.ToDoItems.TodayList;
+namespace Krevetki.ToDoBot.Application.ToDoItems.Queries.TodayList;
 
-public class TodayListQuery : IRequest
-{
-    public User User { get; set; }
-}
+public class TodayListQuery : UserRequest,IRequest;

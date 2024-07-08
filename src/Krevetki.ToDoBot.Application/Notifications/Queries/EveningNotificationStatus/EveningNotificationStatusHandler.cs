@@ -1,6 +1,7 @@
-﻿using Krevetki.ToDoBot.Application.Common.Interfaces;
+﻿using Krevetki.ToDoBot.Application.Common;
+using Krevetki.ToDoBot.Application.Common.Interfaces;
 using Krevetki.ToDoBot.Application.Common.Models;
-using Krevetki.ToDoBot.Application.ToDoItems.Commands.ChangeEveningNotification;
+using Krevetki.ToDoBot.Application.Notifications.Commands.ChangeEveningNotificationStatus;
 
 using MediatR;
 

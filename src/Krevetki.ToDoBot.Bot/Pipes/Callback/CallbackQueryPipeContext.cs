@@ -7,7 +7,7 @@ public class CallbackQueryPipeContext : PipeContextBase
 {
     public CallbackDataType DataType { get; set; }
 
-    public string Data { get; set; }
+    public string Data { get; set; } = null!;
 
     public int MessageId { get; set; }
 }
