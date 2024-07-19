@@ -23,7 +23,7 @@
     "Token":"твой токен"
   },
   "ConnectionStrings": {
-    "Database" : "User ID=;Password=;Host=;Port=;Database=BotRps;"
+    "Database" : "User ID=;Password=;Host=;Port=;Database=ToDoBot;"
   }
 }
 ```
@@ -31,7 +31,7 @@
 ## Запуск через Docker
 Для запуска понадобится установленный на машине докер и база данных
 ```bash
-docker run -d --restart=always --name botrps -e ConnectionStrings__Database='User ID=;Password=;Host=;Port=;Database=BotRps;' -e TelegramOptions__Token='твой токен' wxhami/todo-bot:latest
+docker run -d --restart=always --name todobot -e ConnectionStrings__Database='User ID=;Password=;Host=;Port=;Database=todobot;' -e TelegramOptions__Token='твой токен' wxhami/todo-bot:latest
 ```
 
 
