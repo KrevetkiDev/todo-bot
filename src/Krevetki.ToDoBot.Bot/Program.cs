@@ -1,14 +1,13 @@
 using Krevetki.ToDoBot.Application;
 using Krevetki.ToDoBot.Application.Common.Interfaces;
-using Krevetki.ToDoBot.Application.Common.Models.Contracts;
-using Krevetki.ToDoBot.Application.ToDoItems.Queries.ListTasksByDate;
+using Krevetki.ToDoBot.Application.ToDoItems.Queries.GetTodoitemsByDate;
 using Krevetki.ToDoBot.Bot;
-using Krevetki.ToDoBot.Domain.Entities;
 using Krevetki.ToDoBot.Infrastructure;
 using Krevetki.ToDoBot.Infrastructure.Persistence;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,18 +37,32 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet(
+app.MapPost(
        "/api/v1/todoitems",
-       async (ISender sender, IRepository repository, TodoItemsByDateRequest request, CancellationToken cancellationToken) =>
+       async (GetTodoItemsByDateQuery request,ISender sender,  CancellationToken cancellationToken) =>
        {
-           await var trans
-           User user = null; //get user
+           var responseData = await sender.Send(request, cancellationToken);
 
-           var query = new ListTaskByDateQuery() { Date = request.DateTime, User = user };
+           if (responseData.Count == 0)
+               return Results.NoContent();
 
-           await sender.Send(query, cancellationToken);
+           return Results.Ok(responseData);
        })
-   .WithName("GetWeatherForecast")
+   .WithName("GetToDoItemsByDate")
+   .WithDescription("Get ToDo items by date")
+   .WithOpenApi();
+
+app.MapGet("$/api/v1/user/{user.id}/todoitems", async (GetTodoItemsByDateQuery request,ISender sender,  CancellationToken cancellationToken) =>
+                                                {
+                                                    var responseData = await sender.Send(request, cancellationToken);
+
+                                                    if (responseData.Count == 0)
+                                                        return Results.NoContent();
+
+                                                    return Results.Ok(responseData);
+                                                })
+   .WithName("GetToDoItemsByUserId")
+   .WithDescription("Get ToDo items by user id")
    .WithOpenApi();
 
 app.Run();
