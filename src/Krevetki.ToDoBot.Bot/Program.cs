@@ -52,17 +52,5 @@ app.MapPost(
    .WithDescription("Get ToDo items by date")
    .WithOpenApi();
 
-app.MapGet("$/api/v1/user/{user.id}/todoitems", async (GetTodoItemsByDateQuery request,ISender sender,  CancellationToken cancellationToken) =>
-                                                {
-                                                    var responseData = await sender.Send(request, cancellationToken);
-
-                                                    if (responseData.Count == 0)
-                                                        return Results.NoContent();
-
-                                                    return Results.Ok(responseData);
-                                                })
-   .WithName("GetToDoItemsByUserId")
-   .WithDescription("Get ToDo items by user id")
-   .WithOpenApi();
 
 app.Run();
