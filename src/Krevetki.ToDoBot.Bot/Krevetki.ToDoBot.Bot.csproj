@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>Krevetki.ToDoBot.Bot</UserSecretsId>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,5 +25,11 @@
       <ProjectReference Include="..\Krevetki.ToDoBot.Application\Krevetki.ToDoBot.Application.csproj" />
       <ProjectReference Include="..\Krevetki.ToDoBot.Infrastructure\Krevetki.ToDoBot.Infrastructure.csproj" />
     </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
+  </ItemGroup>
 
 </Project>
